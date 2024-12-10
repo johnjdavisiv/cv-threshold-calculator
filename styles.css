@@ -1,0 +1,1062 @@
+@import url('https://fonts.googleapis.com/css2?family=PT+Mono&family=Roboto:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap');
+
+:root {
+    --primary-color: #007bff;
+    --dark-accent: #0056b3;
+    --hover-color: #bde2ff;
+    --active-color:#2196F3;
+    --link-hover-color:#84caff;
+    --soft-white: #f7f7f7;
+    --soft-black: #333;
+    --app-max-width: 800px;
+    --width-limit: 540px;
+    --toggle-color: #e9ecef;
+    --slider-width: 54px;
+    --slider-height: 30px;
+
+    --scale-factor: 0.9;
+    --dial-size: calc(200px * var(--scale-factor));
+    --button-size: calc(42px * var(--scale-factor));
+    --container-size: calc(300px * var(--scale-factor));
+}
+
+button {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0); /* Removes the default highlight */
+  }
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body, html {
+    font-family: 'Roboto', sans-serif;
+    min-width: 320px;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--soft-white);
+}
+
+
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+h1 {
+    text-align: center;
+    font-size: 1.5em;
+}
+
+h2, h3, h4, h5, h6 {
+    color:var(--soft-black);
+    padding: 0.75em 0 0.25em 0;
+}
+
+
+p {
+    padding: 0.5em 0;
+}
+
+
+
+header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #f3f3f3;
+    height: 4em;
+}
+
+header img.logo {
+    height: 50px; /* Adjust logo size */
+}
+
+header .home-link {
+    white-space: nowrap;
+    text-decoration: none;
+    font-size: 1.5em;
+    color: black;
+    margin: 0 10px; /* Gives some space around the site name */
+}
+
+.header-content{
+    max-width: var(--app-max-width); /* Sets the maximum width of the header content */
+    width: 100%; /* Ensures the content fills the container until it reaches max-width */
+    display: flex; /* Enables flexbox layout */
+    justify-content: space-between; /* Distributes space between items */
+    align-items: center; /* Aligns items vertically */
+    padding: 5px; /* Adds some spacing inside the header content */
+}
+
+/* Header/footer formatting */
+.header-content a, footer a{
+    color: var(--soft-white);
+}
+
+nav a {
+    text-decoration: none;
+    white-space: nowrap;
+    margin: 0 10px;
+}
+
+header, footer {
+    background-color: var(--soft-black); /* a dark background for contrast */
+    color: var(--soft-white); /* white text for visibility against the dark background */
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Main content */
+main {
+    max-width: var(--app-max-width);
+    background-color: white;
+    margin: 0 auto;
+    padding: 0.5em 1em;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* subtle shadow for depth */
+}
+
+
+/* So as-is the padding is set by the <main> left/right padding */
+/* And I think that's what we wnat */
+.app-box  {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color:#0056b3; */
+}
+
+
+/* Material icons */
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+    color:var(--primary-color);
+    background: transparent;
+}
+
+.material-icons{
+    color: var(--primary-color);
+    background-color: white;
+    font-weight: bold;
+}
+
+
+
+/*  Arrow stuff */
+
+
+.arrow-container{
+    width: 100%;
+    min-height: 5em;
+    max-width: var(--width-limit);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+
+.arrow-box {
+    display:flex;
+}
+
+
+/*  >> and > button styling */
+.pct-button {
+    font-size: 1.5em;
+    outline: none; /* remove focus outline (consider accessibility) */
+    cursor: pointer;
+    border: solid var(--primary-color) 2px;
+    background-color: white;
+    border-radius: 50%;
+    margin: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+    height: 2em;
+    width: 2em;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Standard */
+}
+
+
+.digit {
+    font-family:'PT Mono', monospace;
+    font-weight:bold;
+    font-size: 2em;
+}
+
+
+.wind-text {
+    display:flex;
+    align-items: baseline;
+    justify-content: center;
+    font-size: 1.1em;
+}
+
+.wind-unit {
+    font-family: 'Roboto', sans-serif;
+}
+
+
+.incline-label {
+    font-size: 1.5em;
+    font-family: 'Roboto', sans-serif;
+    font-weight: normal;
+    
+}
+
+.wind-label, .wind-digits {
+    font-size: 1.5em;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;    
+}
+
+.wind-type, .wind-angle {
+    font-weight: bold;
+}
+
+.wind-angle {
+    font-family: 'PT Mono', monospace;
+}
+
+
+
+/* Pace input */
+/* Pace input dials */
+
+.digitbox {
+    font-size: 2em;
+    background-color: white;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pace-box {
+    display:flex;
+    flex-direction:row;
+    justify-content: center;
+    width:100%;
+}
+
+.left-dummy {
+    flex:1;
+}
+
+
+.clock {
+    flex:1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.unit-stack {
+    flex: 1;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.unit-stack-horiz {
+    flex: 1;
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.3em;
+}
+
+.pace-toggle {
+    width: 5.5ch;
+    flex: 0;
+}
+
+.wind-toggle {
+    width: 5.5ch
+}
+
+
+.svg-arrow {
+    font-size: 1.5em;
+    outline: none; /* remove focus outline (consider accessibility) */
+    cursor: pointer;
+    border: solid var(--dark-accent) 2px;
+    border-radius: 10px;
+    padding: 0 0px;
+    margin: 4px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* horizontal offset, vertical offset, blur radius, color */
+}
+
+
+.unit-text {
+    height:3em;
+    display:flex;
+    flex-direction: column;
+    justify-content: end;
+    padding: 0 0.75em 0 0;
+    font-family:'PT Mono', monospace;
+    font-weight:bold;
+}
+
+
+.unit-stack li {
+    border-radius:5px;
+}
+
+.unit-toggle, .hill-toggle{
+    background-color: var(--toggle-color);
+    border: none;
+    border-radius:5px;
+    font-size:1.1em;
+    padding: 0.25em 0.5em;
+    margin: 0.2em 0em;
+    cursor:pointer;
+    min-width: 3ch;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Standard */
+}
+
+.metric-toggle{
+    font-size:1em;
+}
+
+
+/* Spacer and within spacer text styling */
+
+.spacer {
+    font-size: 1.5em;
+    width:100%;
+    display:flex;
+    justify-content: center;
+    padding: 0.25em;
+}
+
+.wind-type-spacer {
+    padding: 0.25em 0 0 0em;
+}
+
+
+
+#pace-or-effort, .rise-unit{
+    font-weight:bold;
+}
+
+
+.toggle-box {
+    max-width: var(--width-limit);
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+}
+
+
+.unit-row {
+    white-space: nowrap;
+    width:100%;
+    display:flex;
+    justify-content: center;
+    gap: 0.2em;
+}
+
+
+/* Results */
+
+.pace-result-box{
+    display:flex;
+    align-items: center;
+}
+
+.pace-result, .convert-result {
+    font-family:'PT Mono', monospace;
+    font-weight:bold;
+    font-size: 4.5em;
+}
+
+.convert-units {
+    font-family:'PT Mono', monospace;
+    font-weight: bold;
+}
+
+.advanced-outer {
+    width: 100%;
+    display:flex;
+    font-size: 1em;
+}
+
+.advanced-content{
+    font-size:1.25em;
+}
+
+
+.advanced-title{
+    font-size: 1.5em;
+    padding: 0 0 0.5em 0;
+}
+
+.advanced-right{
+    font-size:1.25em;
+}
+
+.advanced-inner {
+    border-radius: 5px;    
+    width:100%;
+    max-width: var(--width-limit);
+}
+
+.advanced-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.25em 0 0.25em;
+}
+
+.advanced-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.advanced-content.expanded {
+    max-height: 500px; /* Adjust based on content height */
+    transition: max-height 0.5s ease-in;
+}
+
+
+.adv-arrow {
+    font-size: 1.2em;
+    outline: none; 
+    cursor: pointer;
+    border: none;
+    padding: 0 0px;
+    margin: 4px;
+}
+
+.dummy-container {
+    display:flex;
+}
+
+#dummy-spacer{
+    flex:1 1 auto;
+    width: 4ch;
+    max-width: 4ch;
+}
+
+
+/* Style the advanced inputs */
+.input-row {
+    display:flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.slug {
+    display:flex;
+    flex-direction: row;
+    font-size:1.5em;
+}
+
+.height-weight-unit{
+    font-weight:bold;
+}
+
+
+.height-weight-input {
+    font-size:1em;
+    width: 5ch;
+    margin: 0 0.3em;
+}
+
+/* Smaller input box for height/weight */
+#height-ft, #height-in, #height-ft-uk, #height-in-uk, #weight-st, #weight-st-lb{
+    width:4ch
+}
+
+
+
+/* Reset wind container with cleaner layout */
+.new-wind-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: var(--width-limit);
+  }
+  
+  .left-settings, .right-settings {
+    flex: 1;
+  }
+  
+  .center {
+    flex: 0 0 auto;
+    text-align: center;
+  }
+
+.wind-profile-stack {
+    flex: 0 0 auto;
+    display:flex;
+    flex-direction: column;
+    align-items: left;
+    max-width:fit-content;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Standard */
+}
+
+.wind-profile-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.1em;
+    text-wrap: nowrap;
+}
+
+.profile-toggle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-inner {
+    display: flex;
+    flex-direction: row;
+}
+/* fancy toggle for only active button inner */
+
+button.profile-toggle.active:has(.profile-inner) .profile-inner span {
+    /* Your styles here */
+    color: white; /* Example style */
+}
+
+
+.blank-button {
+    background-color: white;
+}
+
+
+
+
+.compass-container {
+    flex-shrink: 0; /* Prevents shrinking */
+    flex-grow: 0; /* Prevents growing */
+    margin: 0 auto; /* Centers the compass-container within its parent */
+    /* visibility: hidden; */
+    position: relative;
+    width: var(--container-size);
+    height: var(--container-size);
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Standard */
+  }
+  
+  .dial-center {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+  
+  .dial-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--dial-size);
+    height: var(--dial-size);
+  }
+  
+  .dial {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .dial-background {
+    fill: white;
+    stroke: #999;
+    stroke-width: 2;
+  }
+
+ 
+  .dial-notch {
+    fill: #333;
+  }
+
+  .dial-notch-circle{
+    fill: white;
+    stroke: var(--primary-color);
+    stroke-width: 1.5;
+  }
+
+
+  #wind-icon {
+    fill:var(--primary-color);
+  }
+  
+  .dial-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 96px; /* Adjust this as needed */
+    height: 96px; /* Adjust this as needed */
+    pointer-events: none; /* Prevent the icon from interfering with knob dragging */
+  }
+  
+  .compass-button {
+    position: absolute;
+    width: var(--button-size);
+    height: var(--button-size);
+    border-radius: 50%;
+    background-color: white;
+    color: #666;
+    border: none;
+    /* font-size: calc(14px * var(--scale-factor)); */
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+
+
+
+  .north { top: 0%; left: 50%; transform: translateX(-50%); }
+  .northeast { top: 15%; right: 15%; }
+  .east { top: 50%; right: 0; transform: translateY(-50%); }
+  .southeast { bottom: 14.5%; right: 14.5%; }
+  /* No idea why southeasy needs 0.5% more to line up pixel perfect */
+  .south { bottom: 0; left: 50%; transform: translateX(-50%); }
+  .southwest { bottom: 15%; left: 15%; }
+  .west { top: 50%; left: 0; transform: translateY(-50%); }
+  .northwest { top: 15%; left: 15%; }
+
+
+
+/* Excplainer box */
+.explainer-text {
+    line-height: 1.5;
+    padding: 0 0.5em;
+    font-size: 1.25em;
+}
+
+
+/* Up arrow back to top */
+
+.material-icons.up {
+    padding: 0 0 0 0.5em;
+    font-size: 1.4rem;
+    color: gray;
+    text-decoration: none;
+}
+
+/* Toggle switch */
+
+
+/* Toggle slider */
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: var(--slider-width, 60px); /* Default width */
+    height: var(--slider-height, 34px); /* Default height */
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: background-color .3s;
+    border-radius: calc(var(--slider-height, 34px) / 2); /* Make the slider rounded based on height */
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: calc(var(--slider-height, 34px) - 8px); /* Adjust based on slider height */
+    width: calc(var(--slider-height, 34px) - 8px); /* Make the circle's size responsive to the slider's height */
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: transform .4s;
+    border-radius: 50%; /* Always fully rounded */
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(calc(var(--slider-width, 60px) - var(--slider-height, 34px))); /* Move circle to the right */
+}
+
+/* Info (i) and question marke (?) */
+
+
+.i-note {
+    outline: none;
+    cursor: pointer;
+    border: solid var(--primary-color) 2px;
+    background-color: white;
+    font-size: 1.25rem;
+    width:1.25em;
+    height:1.25em;
+    display:flex;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    color: #2196F3;
+    align-items: center;
+    justify-content: center; 
+    text-decoration: none;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Standard */
+}
+
+.profile-note{
+    margin:auto;
+    margin-top: 0.25em;
+}
+
+
+/* Table styling */
+
+/* th {
+    background-color: #F9F9F9;
+    color: #333;
+    font-weight: bold; 
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #EEE;
+  }
+  
+  th {
+    background-color: #F9F9F9;
+    color: #333;
+  } */
+
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    text-align: left;
+    padding: 12px 15px;
+    border-bottom: 1px solid #DDD;
+}
+
+th {
+    background-color: #E0E0E0;
+    color: var(--soft-black);
+}
+
+tr:nth-child(even) {
+    background-color: #F2F2F2;
+}
+
+tr:nth-child(odd) {
+    background-color: #FAFAFA;
+}
+
+
+tr:hover {
+    background-color: #D1E7FD;
+}
+
+
+.explainer-text img {
+    width: 100%;
+    height: auto;
+}
+
+.newsletter-block {
+    display: flex;
+    justify-content: center;
+}
+
+/* OL looks bad! */
+.explainer-text ol {
+    margin: 20px 40px; /* Adds space around the entire ordered list */
+    padding-left: 20px; /* Adds space between the list numbers and the text */
+}
+
+.explainer-text ol li {
+    margin-bottom: 15px; /* Adds space between list items */
+    line-height: 1.6; /* Increases line spacing for better readability */
+}
+
+.explainer-text ol li p {
+    margin: 0; /* Removes default margins from paragraphs inside list items */
+    padding: 0; /* Ensures no padding inside paragraphs */
+}
+
+.explainer-text ol {
+    counter-reset: item;
+}
+
+.explainer-text ol li {
+    display: block;
+    position: relative;
+}
+
+.explainer-text ol li:before {
+    content: counter(item) ".";
+    counter-increment: item;
+    position: absolute;
+    left: -30px; /* Adjust this based on your desired distance from the text */
+    top: 0;
+    font-weight: bold;
+}
+
+
+
+/* Hover only on mice */
+@media (hover: hover) {
+    .svg-arrow:hover, .pct-button:hover, .unit-toggle:hover, .hill-toggle:hover {
+        background-color: var(--hover-color);
+        box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    
+    .compass-button:hover{
+        background-color: var(--link-hover-color);
+        color:white;
+    }
+
+    
+    .hill-button:hover {
+        cursor:pointer;
+        color: var(--dark-accent);
+    }
+    
+    
+    .i-note:hover{
+        background-color: var(--hover-color);
+        cursor:pointer;
+    }
+    
+    .flip-button:hover {
+        color: var(--dark-accent);
+        cursor: pointer;
+    }
+    .unit-toggle:hover, .hill-toggle:hover {
+        color:black;
+    }
+    
+    .logo-link a:hover{
+        color:var(--link-hover-color);
+    }
+    
+    .menu a:hover {
+        color:var(--link-hover-color);
+    }
+    
+    .material-icons.up:hover  {
+        color:var(--primary-color);
+    }
+    
+    .bulb-icon:hover{
+        background-color: #fefce8;
+    }
+    
+
+    .blank-button:hover {
+        background-color: white;
+        box-shadow: none;
+    }
+
+    .adv-arrow:hover {
+        color:var(--dark-accent)
+    }    
+
+    .invis:hover{
+        color:white;
+    }
+
+    button.profile-toggle.active:has(.profile-inner):hover .profile-inner span {
+        /* only vc it looks slightly bad on desktop */
+        color:var(--primary-color);
+    }
+}
+
+
+
+/* Responsive stuff, tweak as needed */
+@media (max-width: 500px) {   
+    h1 {
+        font-size: 1.33em;
+    }
+    main {
+        padding: 0.25em 0.25em; 
+    }
+
+    .wind-label, .wind-digits {
+        font-size: 1.3em
+    }
+
+    .pct-button {
+        font-size: 1.3em;
+        margin: 2px;
+    }
+}
+
+
+
+@media (max-width: 400px) {
+    h1 {
+        font-size: 1.1em;
+    }
+    
+    .header-content, .header-content a, nav a {
+        font-size: 1em; /* Reduce font size */
+    }
+    
+    .header-content {
+        padding: 5px; /* Reduce padding for more space */
+    }
+    
+    .svg-arrow {
+        font-size: 1.25em;
+    }
+    
+    .digit, .wind-label, .wind-text, .wind-digits {
+        font-size: 1.1em;
+    }
+    .pct-button {
+        font-size: 1.25em;
+        margin: 2px;
+    }
+    
+    .pace-result {
+        font-size: 3em;
+    }
+    
+    .spacer {
+        font-size: 1.25em;
+    }
+    
+    .unit-toggle, .hill-toggle{
+        font-size: 0.9em;
+        padding: 0.25em 0.25em;
+        margin: 0.2em 0em;
+    }
+    
+    .hill-unit, .hill-text, .unit-text {
+        font-size: 0.8em;
+    }
+
+    .advanced-title{
+        font-size: 1em;
+        padding: 0 0 0.25em 0;
+    }
+
+    .advanced-content {
+        font-size:1em;
+    }
+    
+}
+
+
+/* Affecting things that are active */
+
+
+.compass-button:active{
+    background-color: var(--active-color);
+    color:white;
+  }
+
+
+
+/* Coloring buttons when active */
+.unit-toggle:active{
+    background-color: var(--active-color);
+}
+
+.svg-arrow:active, .pct-button:active {
+    /* Must be AFTER hover def! */
+    background-color: var(--link-hover-color);
+    /* color: white; */
+}
+
+
+.blank-button:active {
+    background-color: white;
+}
+
+/* IF the to/from unit buttons are active */
+.active {
+    background-color: var(--active-color);
+    color:white;
+}
+
+.i-note:active {
+    color:white;
+    border: solid var(--link-hover-color) 2px;
+}
+
+/* At the bottom I guess */
+
+.invis{
+    color:white;
+}
+
+.hidden {
+    display: none;
+}
