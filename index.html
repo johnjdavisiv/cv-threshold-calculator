@@ -14,7 +14,7 @@
     <meta name="twitter:description" content="Calculate the effects of headwinds and tailwinds on your pacing for workout and races.">
     <meta name="twitter:image" content="https://apps.runningwritings.com/wind-calculator/images/wind-app-social-card-1200px.png">
     <meta name="author" content="John J Davis, PhD">
-    <title>Headwind and tailwind calculator for runners - from Running Writings</title>
+    <title>Threshold, CV pace, and VO2max pace calculator for runners - from Running Writings</title>
     <link rel="icon" href="https://apps.runningwritings.com/wind-calculator/images/RW-favicon.png" type="image/png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -36,14 +36,14 @@
         </div>
     </header>
     <main>
-        <h1>Headwind and tailwind calculator</h1>
+        <h1>Threshold, CV, and VO2max paces from 5k time</h1>
         <div class="app-box">
             <div class="pace-box">
                 <div class="left-dummy"></div>
                 <div class="clock" id="pace-dials">
                     <div class="digitbox">
                         <button class="material-icons svg-arrow" id="d1-up">expand_less</button>
-                        <div class="digit" id="d1">7</div>
+                        <div class="digit" id="d1">18</div>
                         <button class="material-icons svg-arrow" id="d1-down">expand_more</button>
                     </div>
                     <div class="digitbox colon">
@@ -59,145 +59,29 @@
                         <div class="digit" id="d3">0</div>
                         <button class="material-icons svg-arrow" id="d3-down">expand_more</button>
                     </div>
-                    <div class="unit-text" id="pace-units">/mi</div>
+                    <div class="unit-text" id="pace-units">5k</div>
                 </div>
-                <div class="clock hidden" id="speed-dials">
-                    <div class="digitbox">
-                        <button class="material-icons svg-arrow" id="s1-up">expand_less</button>
-                        <div class="digit" id="s1">6</div>
-                        <button class="material-icons svg-arrow" id="s1-down">expand_more</button>
-                    </div>
-                    <div class="digitbox colon">
-                        <span class="digit">.</span>
-                    </div>
-                    <div class="digitbox">
-                        <button class="material-icons svg-arrow" id="s2-up">expand_less</button>
-                        <div class="digit" id="s2">0</div>
-                        <button class="material-icons svg-arrow" id="s2-down">expand_more</button>
-                    </div>
-                    <div class="unit-text" id="speed-units">mph</div>
-                </div>
-                <div class="unit-stack">
-                    <button class="unit-toggle pace-toggle active" id="mi-pace">/mi</button>
+                <div class="unit-stack" id="input-units">
+                    <button class="unit-toggle pace-toggle active" id="fivek-pace">5k</button>
+                    <button class="unit-toggle pace-toggle" id="mi-pace">/mi</button>
                     <button class="unit-toggle pace-toggle" id="km-pace">/km</button>
-                    <button class="unit-toggle pace-toggle" id="mph-speed">mph</button>
-                    <button class="unit-toggle pace-toggle" id="kmh-speed">km/h</button>
-                    <button class="unit-toggle pace-toggle" id="kmh-speed">m/s</button>
+                    <button class="unit-toggle pace-toggle" id="km-pace">/400m</button>
                 </div>
             </div>
             <div class="spacer toggle-box" id="pace-post">
-                <a href="#effort-vs-pace" class="i-note">?</a>
+                <a href="#time-or-pace" class="i-note">?</a>
                 <div>
-                    <span id="pace-or-effort">pace</span><span>&nbsp;with a</span>
+                    <strong><span id="time-or-pace">time</span></strong><span>&nbsp;for 5k</span>
                 </div>
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider round"></span>
-                </label>
-            </div>
-            <div class="arrow-container" id="wind-input">
-                <div class="arrow-box">
-                    <button class="material-icons pct-button" id="wind-m5" title="-5">keyboard_double_arrow_left</button>
-                    <button class="material-icons pct-button" id="wind-m1" title="-1">keyboard_arrow_left</button>
-                </div>
-                <div class="wind-text">
-                    <span class="wind-digits" id="wind-digit">5</span>
-                    <span class="wind-label">&nbsp;</span>
-                    <span class="wind-label" id="wind-units">mph</span>
-                    <span class="wind-label">&nbsp;</span>
-                    <span class="wind-label" id="wind-type">headwind</span>
+                <div></div>
 
-                </div>
-                <div class="arrow-box">
-                    <button class="material-icons pct-button" id="wind-p1" title="+1">keyboard_arrow_right</button>
-                    <button class="material-icons pct-button" id="wind-p5" title="+5">keyboard_double_arrow_right</button>
-                </div>
             </div>
-            <div class="unit-stack-horiz wind-unit-select">
-                <button class="unit-toggle wind-toggle active">mph</button>
-                <button class="unit-toggle wind-toggle">km/h</button>
-                <button class="unit-toggle wind-toggle">knots</button>
-                <button class="unit-toggle wind-toggle">m/s</button>
-            </div>
-
             <div class="new-wind-container">
-                <div class="box left-settings">
-                    <div class="inner-left-content">
-                        <div class="wind-profile-stack">
-                            <div class="wind-profile-header">Wind profile</div>
-                            <button class="unit-toggle profile-toggle" id="profile-city">
-                                <div class="profile-inner">
-                                    <span class="material-symbols-outlined">
-                                        location_city
-                                    </span>
-                                    <span class="material-symbols-outlined">
-                                        forest
-                                    </span>
-                                </div>
-                                <span>City/Forest</span>
-                            </button>
-                            <button class="unit-toggle profile-toggle active" id="profile-suburbs">
-                                <div class="profile-inner">
-                                    <span class="material-symbols-outlined">
-                                        home_work
-                                    </span>
-                                    <span class="material-symbols-outlined">
-                                        nature
-                                    </span>
-                                </div>
-                                <span>Suburbs</span>
-                            </button>
-                            <button class="unit-toggle profile-toggle" id="profile-rural">
-                                <div class="profile-inner">
-                                    <span class="material-symbols-outlined">
-                                        agriculture
-                                    </span>
-                                    <span class="material-symbols-outlined">
-                                        psychiatry
-                                    </span>
-                                </div>
-                                <span>Rural/Park</span>
-                            </button>
-                            <button class="unit-toggle profile-toggle" id="profile-none">
-                                <div class="profile-inner">    
-                                    <span class="material-symbols-outlined">
-                                        wind_power
-                                    </span>
-                                </div>
-                                <span>None</span>
-                            </button>
-                            <a href="#wind-profile-mode" class="i-note profile-note">?</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="box center">
-                    <div class="compass-container">
-                        <div class="dial-container">
-                            <svg class="dial" viewBox="0 0 100 100">
-                                <circle class="dial-background" cx="50" cy="50" r="45"/>
-                                <circle class="dial-notch dial-notch-circle" cx="50" cy="12" r="10"/>
-                                <!-- <polygon class="dial-notch" points="50,10 45,20 55,20"/> -->
-                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" class ="dial-notch" id="wind-icon">
-                                    <path d="M460-160q-50 0-85-35t-35-85h80q0 17 11.5 28.5T460-240q17 0 28.5-11.5T500-280q0-17-11.5-28.5T460-320H80v-80h380q50 0 85 35t35 85q0 50-35 85t-85 35ZM80-560v-80h540q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43h-80q0-59 40.5-99.5T620-840q59 0 99.5 40.5T760-700q0 59-40.5 99.5T620-560H80Zm660 320v-80q26 0 43-17t17-43q0-26-17-43t-43-17H80v-80h660q59 0 99.5 40.5T880-380q0 59-40.5 99.5T740-240Z" transform="rotate(90, 480, -480)"/>
-                                </svg>
-                            </svg>
-                            <img src="images/runner-icon-256.png" class="dial-center" alt=""/>
-                        </div>                  
-                        <button class="compass-button north">N</button>
-                        <button class="compass-button northeast">NE</button>
-                        <button class="compass-button east">E</button>
-                        <button class="compass-button southeast">SE</button>
-                        <button class="compass-button south">S</button>
-                        <button class="compass-button southwest">SW</button>
-                        <button class="compass-button west">W</button>
-                        <button class="compass-button northwest">NW</button>
-                    </div>
-                </div>
-                <div class="box right-settings"></div>
+                EMPTY DIV
               </div>
 
             <div class="spacer effort-container">
-                <span id="result-pre">is the same effort as</span>
+                <span id="result-pre">Training paces:</span>
             </div>
             <div class="pace-result-box">
                 <div class="left-dummy"></div>
@@ -207,149 +91,32 @@
                 </div>
                 <div class="left-dummy"></div>
             </div>
-            <div class="spacer advanced-outer">
-                <div class="advanced-inner">
-                    <div class="advanced-top-row">
-                        <span class="dummy-container"><a href="#height-weight-info" class="i-note">?</a><span id="dummy-spacer"></span></span>
-                        <span class="advanced-title", id="typical-or-custom">For a typical runner</span>
-                        <div class="advanced-settings-right">
-                            <button class="material-icons adv-arrow invis" id="advanced-reset">rotate_left</button>
-                            <button class="material-icons adv-arrow" id="advanced-expand">settings</button>
-                        </div>
-                    </div>
-                    <div class="advanced-content" id="advanced-content">
-                        <!-- ADD "expanded" HERE ^^^ for testing -->
-                        <div class="input-row ht-wt-div" id="imperial-input">
-                            <span class="input-text">Runner:&nbsp;</span>
-                            <input class="height-weight-input" id="weight-lbs" type="number" inputmode="numeric" step="1" value="150" min="30" max="999">
-                            <label for="weight-lbs" class="height-weight-unit" id="weight-unit-lbs">lbs</label>
-                        </div>
-                        <div class="input-row ht-wt-div hidden" id="metric-input">
-                            <span class="input-text">Runner:&nbsp;</span>
-                            <input class="height-weight-input" id="weight-kg" type="number" inputmode="numeric" step="1" value="68" min="15" max="500">
-                            <label for="weight-kg" class="height-weight-unit" id="weight-unit-kg">kg</label>
-                        </div>
-                        <div class="input-row ht-wt-div hidden" id="uk-input">
-                            <span class="input-text">Runner:&nbsp;</span>
-                            <input class="height-weight-input" id="weight-st" type="number" inputmode="decimal" step="1" value="10" min="3" max="80">
-                            <label for="weight-st" class="height-weight-unit">st</label>
-                            <input class="height-weight-input" id="weight-st-lb" type="number" inputmode="decimal" step="1" value="10" min="0" max="13">
-                            <label for="weight-st-lb" class="height-weight-unit">lb</label>
-                        </div>
-                        <div class="input-row">
-                            <div class="unit-togglebox">
-                                <button class="metric-toggle unit-toggle active">usa</button>
-                                <button class="metric-toggle unit-toggle">uk</button>
-                                <button class="metric-toggle unit-toggle">metric</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="spacer">
+                <table class="result-table">
+                    <tr>
+                      <td>Threshold pace</td>
+                      <td><span class="output-pace" id="threshold-pace">12:34</span><span class="result-units">/mi</span></td>
+                    </tr>
+                    <tr>
+                      <td>CV pace</td>
+                      <td><span class="output-pace" id="cv-pace">12:34</span><span class="result-units">/mi</span></td>
+                    </tr>
+                    <tr>
+                      <td>VO2max pace</td>
+                      <td><span class="output-pace" id="vo2max-pace">12:34</span><span class="result-units">/mi</span></td>
+                    </tr>
+                  </table>
             </div>
-        </div>
+            <div class="unit-stack-horiz">
+                <button class="unit-toggle output-toggle active">/mi</button>
+                <button class="unit-toggle output-toggle">/km</button>
+                <button class="unit-toggle output-toggle">/400m</button>
+                <button class="unit-toggle output-toggle">/200m</button>
+            </div>
         <div class="explainer-text">
             <h2 id="how-to-use">How to use<a class="material-icons up" href="#top">arrow_upward</a></h2>
 
-            <p>This app calculates the effects of headwinds and tailwinds on your pacing when you run. It uses a combination of aerodynamics calculations and empirical data to calculate a <strong>“wind-adjusted pace”</strong> or effort level when running into or with a wind of a given strength.</p>
-            <p>All you need to input is the pace (or effort level) you are running at, and the direction of the wind relative to the runner. <strong>You can click on the compass directions</strong> to “snap” the wind to a specific orientation, or click and drag the dial to get a feel for how crosswinds of varying degrees.</p>
-            <p>The calculator accepts running pace in minutes per mile (/mi) or minutes per kilometer (/km), as well as running speed in miles per hour (mph), kilometers per hour (km/h), or meters per second (m/s). Wind speed can be entered in mph, km/h, knots, or meters per second (m/s).</p>
-            <p>When entering wind speed, you should enter it as the <strong>wind speed measured in a stationary position </strong>(i.e. the wind speed as you'd see in a weather app on your phone, or that you'd measure with an anemometer).</p>
-            <p>In other words, this calculator already accounts for the fact that running at 10 mph into a 5 mph headwind creates an effective 15 mph airspeed—you do not (and should not) need to do this math yourself. Likewise, the calculator already accounts for the metabolic cost of overcoming air resistance on a calm day.</p>
-            <p>Also note that the compass directions (N, NE, E, …) are<em> illustrative only</em>. Obviously, if you are running south into a wind <em>from </em>the south, you are encountering a direct headwind, and you would have the calculator pointed to “north”—hence the top-down view of the runner and the text annotation.</p>
-            <p>For more advanced use-cases, you can customize the weight of the runner and the wind profile used to calculate the true chest-level wind that you experience in different settings. See below for details on those fronts.</p>
-            <h3>How the wind adjusted pace calculations work<a class="material-icons up" href="#top">arrow_upward</a></h3>
-            <p>Conceptually, calculating the effects of headwinds and tailwinds on pacing is relatively simple. The calculator uses the following procedure:</p>
-            <ol>
-                <li>
-                    <p>Calculate the metabolic cost of running at the given speed in calm air.</p>
-                </li>
-                <li>
-                    <p>Use the drag equation to calculate the additional horizontal force that the runner experiences while moving through the air, accounting for both the runner's overground velocity and the wind velocity.</p>
-                </li>
-                <li>
-                    <p>Calculate the metabolic cost of overcoming the opposing horizontal force caused by the drag forces (or, in the case of a strong tailwind, the reduction in metabolic cost from the assistive force).</p>
-                </li>
-                <li>
-                    <p>Find the calm-air running speed which would produce the same total metabolic cost, when adding the metabolic cost of overcoming drag forces to the metabolic cost of overcoming air resistance on a calm day.</p>
-                </li>
-            </ol>
-            <p>A similar process works for finding the equivalent effort for a given pace.</p>
-            <p>In <em>practice</em>, the calculations get a bit tedious. I have a full write-up on <a href="https://runningwritings.com/2024/08/headwinds-and-tailwinds-in-running.html"><strong>the science of headwinds and tailwinds for runners</strong></a> on my main site, so check that out if you are interested in the specifics.</p>
-            <h3>Are these wind calculations accurate?<a class="material-icons up" href="#top">arrow_upward</a></h3>
-            <p><strong>In a word, yes</strong>. The plots below show the predicted metabolic cost of running at various headwind speeds (solid line) compared against real wind-tunnel data from <a href="https://pubmed.ncbi.nlm.nih.gov/5574828/">Pugh 1971</a>. This calculator was not “tuned” to the runner's data at all, aside from customizing the height and weight (and using no wind profile adjustment, since the measured wind speed inside the wind tunnel is the true wind speed encountered by the runner).</p>
-            <img src="https://runningwritings.com/wp-content/uploads/2024/08/05-Predicted-versus-actual-effect-of-headwinds-and-tailwinds-on-running-cost-1536x1536.png">
-            <p>The predicted metabolic costs line up very well for headwinds as strong as 15 mph, and the error is not too bad even into a 20 mph headwind. The reason the calculator predicts too high of a metabolic cost in extreme headwinds is likely because runners “lean into” extreme headwinds to generate lift, which reduces the metabolic cost of running slightly.</p>
-            <p>Do see the <a href="#limitations">limitations section</a> below for some caveats, though.</p>
-            <h3>Calculating the effects of crosswinds<a class="material-icons up" href="#top">arrow_upward</a></h3>
-            <p>This wind calculator uses principles of vector addition to deal with crosswinds: first, the relative velocity of the air is calculated, then used to calculate the total drag force. Then, the forward component of the drag force vector is used to calculcate the effective opposing (or assisting) force experienced by the runner.</p>
-            <p>For now, the lateral component of drag forces from crosswinds is ignored. The potential effects of ignoring lateral effects are discussed in the limitations section. The main reason they are ignored is that there is no research on the metabolic cost of resisting a lateral force during running. I suspect these costs are not very big, though, since runners deal with lateral forces just fine when running on a track without any major effects on their pacing.</p>
-            <p>Do note that, because of how the drag equation works, a pure lateral crosswind <em>does</em> still slow you down!</p>
-            <h2 id="height-weight-info">Do height and weight affect pacing in the wind?<a class="material-icons up" href="#top">arrow_upward</a></h2>
-            <p><strong>No, not really</strong>. Height and weight have countervailing effects at different points in the calculation process. On one hand, taller and heavier runners have more forward-facing surface area, and thus experience a greater absolute drag force.</p>
-            <p>However, since the metabolic cost of overcoming horizontal forces is a function of the magnitude of the force <em>relative to body mass</em>, greater drag forces are less metabolically costly for a heavier runner. Height and weight effects <em>mostly </em>cancel out, but for precise calculations—or for comparisons with experimental data—you can adjust your body weight using the dropdown. You'll notice that smaller runners are slightly more affected by strong headwinds, but you need to use enormous differences (e.g. 200 lbs vs 100 lbs) to see an effect.</p>
-            <p>The reason you only need to input weight and not height is because the equation the app uses to calculate body surface area (from <a href="https://pubmed.ncbi.nlm.nih.gov/11500314/">Livingston and Lee 2001</a>) requires only weight, and actually outperforms older equations that used both height and weight.</p>
-            <h2 id="wind-profile-mode">Wind profile: nominal versus actual wind speeds<a class="material-icons up" href="#top">arrow_upward</a></h2>
-            <p>Wind measurements are made at weather stations positioned 33 feet (10 meters) off the ground, typically away from major obstacles like buildings and trees. For a runner at ground level, the actual wind speed you encounter is affected by the terrain and obstacles around you: even for the same nominal wind speed, you will encounter less wind in a busy suburban area than on a lonely country road.</p>
-            <p>These ground level effects can be significant: in a city or a dense forest, the true wind speed at chest height (~1.5 meters off the ground) can be less than half the wind speed up at 10 meters off the ground where the wind speed is typically measured and forecast.</p>
-            <p>The wind profile settings allow you to use an empirical model in meteorology called the <a href="https://en.wikipedia.org/wiki/Wind_profile_power_law">wind profile power law</a> to attempt to adjust for the effects of shelter and terrain on the true wind speed you encounter.</p>
-            <p>The table below shows the recommended settings for various conditions you might encounter in your training.</p>
-            <table>
-                <thead>
-                  <tr>
-                    <th>Setting</th>
-                    <th>&alpha;</th>
-                    <th>Recommended Wind Profile Mode</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Urban</td>
-                    <td>0.40</td>
-                    <td>Urban areas with tightly-packed tall buildings, dense forests</td>
-                  </tr>
-                  <tr>
-                    <td>Suburban</td>
-                    <td>0.30</td>
-                    <td>Suburbs, town center, park with trees and buildings</td>
-                  </tr>
-                  <tr>
-                    <td>Rural</td>
-                    <td>0.16</td>
-                    <td>Rural road, open prairie, grasslands</td>
-                  </tr>
-                  <tr>
-                    <td>None</td>
-                    <td>0.00</td>
-                    <td>Exposed mountain ridge, true ground-level wind measurements (e.g. wind gauge for track events)</td>
-                  </tr>
-                </tbody>
-              </table>
-            <p>The default is “Suburbs” simply because that's the most common training location for the runners that I coach.</p>
-            <p>Notably, if you have a true ground-level wind speed—for example, from an anemometer or a wind gauge kit used to measure wind speeds in sprint events—you should set the wind profile to “None.” Setting the wind profile to None applies <em>no </em>correction, i.e. it assumes that your input wind speed is exactly the air speed that the runner encounters.</p>
-            <p>Because “tube-style” wind gauges measure only the head-on component of wind (in the direction they are pointing), you should also set the wind direction in this app to be a direct headwind, i.e. “N” on the compass rose, if you are using a track and field wind gauge as your source of wind speed. The same is not true for normal anemometers used for weather measurements.</p>
-            <h2 id="effort-vs-pace">Effort versus pace when running in the wind<a class="material-icons up" href="#top">arrow_upward</a></h2>
-            <p>This calculator has two modes: effort mode and pace mode.</p>
-            <p>In effort mode, the calculator answers this question: “If I run at the effort level that <em>would </em>produce 7:00/mi in calm conditions, what would the actual pace be given the current wind conditions?”</p>
-            <p>Effort mode is what I use when I'm adjusting workout paces for windy days. I know the athlete's target pace in calm conditions, and I want to know what they should aim for when running into (or with) the wind.</p>
-            <p>In pace mode, the calculator answers this question: “If I <em>actually ran </em>7:00/mi in the current wind conditions, how fast would I have gone in calm conditions?”</p>
-            <p>Pace mode is useful if you've already done your run (or race) and want to back-calculate your effective effort, given the splits you actually ran during the segments into, or with, the wind.</p>
-            <h2 id="limitations">Limitations<a class="material-icons up" href="#top">arrow_upward</a></h2>
-            <p>There are three main sources of uncertainty that put some limits on the accuracy of these headwind and tailwind calculations.</p>
-            <p>The first is the uncertainty in the wind profile. The wind profile power law is only an approximation, and hyper-local terrain can significantly affect the true wind speed you encounter. If you have extensive knowledge of meteorology or civil engineering and have ideas for improvements on this front, <a href="mailto:john@runningwritings.com">send me an email.</a></p>
-            <p>Otherwise, if you have actual ground-level wind speed, you can just set the wind profile to None and use your true wind speed. I have vague hopes of running watches eventually incorporating a wind sensor, which would negate this limitation completely.</p>
-            <p>The second source of uncertainty is the metabolic cost of lateral horizontal forces from crosswinds. Right now, the calculator only accounts for the opposing or assistive forces in the direction you are running—for example, with a 10 mph diagonal crosswind at 45 degrees, the calculator only considers the 7 mph headwind component to have a metabolic cost; the 7 mph lateral component is assumed to generate no metabolic cost.</p>
-            <p>This is probably an unrealistic assumption, but there is no research yet on the metabolic cost of overcoming lateral forces. I am emailing a few researchers for their thoughts and I'll update the calculator if anyone has any clever ideas.</p>
-            <p>The third is the individual variation in the metabolic cost of running, and in the metabolic cost of overcoming opposing horizontal forces. I am currently working on getting access to the individual-level data I'd need to construct uncertainty intervals around the “point estimate” given by the wind calculator.</p>
-            <p>There are a few other minor limitations, like the fact that this calculator assumes you are near sea level (for air density effects) but those are only relevant at very high altitudes and fairly fast speeds.</p>
-            <h3>What about running on a track?<a class="material-icons up" href="#top">arrow_upward</a></h3>
-            <p>Running on a track is tricky because you get exposed to all 360 degrees of the wind each lap. Calculating the net metabolic effect would require a line integral through a vector field. Not too complicated to numerically approximate, and the calculator already has the basic equations to do it, but it's probably something I'll split off into a more specialized calculator—<a href="https://runningwritings.eo.page/news-and-notes-signup"><strong>join my email newsletter</strong></a> if you want to find out when I release that app.</p>
-            <p>The same line integral trick should work for calculating a “net wind effect” across an entire running route, but that would require uploading a .gpx file. That's a heavier lift, so don't get your hopes up.</p>
-            <h3>What about drafting?<a class="material-icons up" href="#top">arrow_upward</a></h3>
-            <p>I'm working on it. Once the drag equation and metabolic cost calculations are complete, it's not that much extra trouble to calculate the additional effects from drafting behind another runner, thanks to the raft of excellent experimental and computational research on drafting in running that's come out in the wake of the Nike Breaking2 Project and the Ineos 1:59 Challenge.</p>
-            <p>However, because drafting is most common on the track, I probably will not implement drafting calculations until I have a track-lap wind effect calculator as well. Again, <a href="https://runningwritings.eo.page/news-and-notes-signup"><strong>join my email newsletter</strong></a> if you want to know when that comes out! I will also write up an accompanying article on the science of drafting.</p>
-            <h3>Will this calculator work for cycling?<a class="material-icons up" href="#top">arrow_upward</a></h3>
-            <p><strong>No</strong>, for two reasons. First, the drag coefficient and frontal area are different in running versus cycling. Second, and more importantly, the calculations under the hood use two empirical datasets for metabolic cost: <a href="https://pubmed.ncbi.nlm.nih.gov/28459289/">Black et al. 2018</a>, to calculate the metabolic cost of running at a given speed without air resistance, and <a href="https://pubmed.ncbi.nlm.nih.gov/35834628/">Da Silva et al. 2022</a>, to calculate the metabolic cost of overcoming a given horizontal opposing force.</p>
-            <p>Cycling and running do not have the same speed-metabolic cost relationship, so if you punch in cycling data, you'll probably get nonsense. However, if you have the appropriate metabolic cost data, it would be relatively easy to swap out these calculations and change the drag coefficient and frontal area. The <a href="https://github.com/johnjdavisiv/wind-calculator" target="_blank">source code</a> is MIT license, so have at it!</p>
+            <p>Explainer text</p>
             <h2 id="get-updates">Support my work<a class="material-icons up" href="#top">arrow_upward</a></h2>
             <p>If you want to find out when I have new apps and research coming out, sign up for my email list below! It's the best way to follow my work.</p>
             <p>If you enjoy my work and want to help support me, be sure to check out my book, <a href="https://amzn.to/46W0CxV"><strong>Modern Training and Physiology</strong></a> - it's available on Amazon as both an eBook and paperback.</p>

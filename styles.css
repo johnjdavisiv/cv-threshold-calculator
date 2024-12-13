@@ -154,6 +154,10 @@ main {
     color: var(--primary-color);
     background-color: white;
     font-weight: bold;
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Standard */
 }
 
 
@@ -288,7 +292,7 @@ main {
 }
 
 .pace-toggle {
-    width: 5.5ch;
+    width: 6.25ch;
     flex: 0;
 }
 
@@ -560,103 +564,6 @@ button.profile-toggle.active:has(.profile-inner) .profile-inner span {
 
 
 
-.compass-container {
-    flex-shrink: 0; /* Prevents shrinking */
-    flex-grow: 0; /* Prevents growing */
-    margin: 0 auto; /* Centers the compass-container within its parent */
-    /* visibility: hidden; */
-    position: relative;
-    width: var(--container-size);
-    height: var(--container-size);
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Standard */
-  }
-  
-  .dial-center {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-  
-  .dial-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: var(--dial-size);
-    height: var(--dial-size);
-  }
-  
-  .dial {
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-  }
-
-  .dial-background {
-    fill: white;
-    stroke: #999;
-    stroke-width: 2;
-  }
-
- 
-  .dial-notch {
-    fill: #333;
-  }
-
-  .dial-notch-circle{
-    fill: white;
-    stroke: var(--primary-color);
-    stroke-width: 1.5;
-  }
-
-
-  #wind-icon {
-    fill:var(--primary-color);
-  }
-  
-  .dial-center {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 96px; /* Adjust this as needed */
-    height: 96px; /* Adjust this as needed */
-    pointer-events: none; /* Prevent the icon from interfering with knob dragging */
-  }
-  
-  .compass-button {
-    position: absolute;
-    width: var(--button-size);
-    height: var(--button-size);
-    border-radius: 50%;
-    background-color: white;
-    color: #666;
-    border: none;
-    /* font-size: calc(14px * var(--scale-factor)); */
-    font-size: 1.1em;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-
-
-
-  .north { top: 0%; left: 50%; transform: translateX(-50%); }
-  .northeast { top: 15%; right: 15%; }
-  .east { top: 50%; right: 0; transform: translateY(-50%); }
-  .southeast { bottom: 14.5%; right: 14.5%; }
-  /* No idea why southeasy needs 0.5% more to line up pixel perfect */
-  .south { bottom: 0; left: 50%; transform: translateX(-50%); }
-  .southwest { bottom: 15%; left: 15%; }
-  .west { top: 50%; left: 0; transform: translateY(-50%); }
-  .northwest { top: 15%; left: 15%; }
-
 
 
 /* Excplainer box */
@@ -788,7 +695,7 @@ table {
     color: #333;
   } */
 
-
+/* 
   table {
     width: 100%;
     border-collapse: collapse;
@@ -820,6 +727,7 @@ tr:hover {
     background-color: #D1E7FD;
 }
 
+ */
 
 .explainer-text img {
     width: 100%;
