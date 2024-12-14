@@ -36,7 +36,7 @@
         </div>
     </header>
     <main>
-        <h1>Threshold, CV, and VO2max paces from 5k time</h1>
+        <h1>Threshold, CV, and VO2max pace calculator</h1>
         <div class="app-box">
             <div class="pace-box">
                 <div class="left-dummy"></div>
@@ -61,12 +61,34 @@
                     </div>
                     <div class="unit-text" id="pace-units">5k</div>
                 </div>
-                <div class="unit-stack" id="input-units">
-                    <button class="unit-toggle pace-toggle active" id="fivek-pace">5k</button>
-                    <button class="unit-toggle pace-toggle" id="mi-pace">/mi</button>
-                    <button class="unit-toggle pace-toggle" id="km-pace">/km</button>
-                    <button class="unit-toggle pace-toggle" id="km-pace">/400m</button>
+                <div class="left-dummy"></div>
+            </div>
+            <div class="race-pace-text-box">
+                <span class="race-pace-prefix">Pace:</span>
+                <span class="race-pace-holder"><span class="race-pace">5:43</span><span>/mi</span></span>
+                <span class="race-pace-holder"><span class="race-pace">2:52</span><span>/km</span></span>
+                <span class="race-pace-holder"><span class="race-pace">1:26.0</span><span>/400m</span></span>
+            </div>
+            <div class="race-select-box">
+                <div class="left-dummy"></div>
+                <div class="race-opts">
+                    <button class="race-button">800m</button>
+                    <button class="race-button">1000m</button>
+                    <button class="race-button">1200m</button>
+                    <button class="race-button">1500m</button>
+                    <button class="race-button">1600m</button>
+                    <button class="race-button">Mile</button>
+                    <button class="race-button">3000m</button>
+                    <button class="race-button">3200m</button>
+                    <button class="race-button">2 mi</button>
+                    <button class="race-button">4 km</button>
+                    <button class="race-button active">5 km</button>
+                    <button class="race-button">6 km</button>
+                    <button class="race-button">8 km</button>
+                    <button class="race-button">10 km</button>
+                    <button class="race-button">custom</button>
                 </div>
+                <div class="left-dummy"></div>
             </div>
             <div class="spacer toggle-box" id="pace-post">
                 <a href="#time-or-pace" class="i-note">?</a>
@@ -76,20 +98,8 @@
                 <div></div>
 
             </div>
-            <div class="new-wind-container">
-                EMPTY DIV
-              </div>
-
             <div class="spacer effort-container">
-                <span id="result-pre">Training paces:</span>
-            </div>
-            <div class="pace-result-box">
-                <div class="left-dummy"></div>
-                <div class="pace-result-text">
-                    <span class="pace-result" id="output-text">6:51</span>
-                    <span class="convert-units" id="output-units">/mi</span>
-                </div>
-                <div class="left-dummy"></div>
+                <span id="result-pre"><strong>Training paces:</strong></span>
             </div>
             <div class="spacer">
                 <table class="result-table">
@@ -112,6 +122,7 @@
                 <button class="unit-toggle output-toggle">/km</button>
                 <button class="unit-toggle output-toggle">/400m</button>
                 <button class="unit-toggle output-toggle">/200m</button>
+                <button class="unit-toggle output-toggle">custom</button>
             </div>
         <div class="explainer-text">
             <h2 id="how-to-use">How to use<a class="material-icons up" href="#top">arrow_upward</a></h2>

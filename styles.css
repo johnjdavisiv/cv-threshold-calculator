@@ -263,9 +263,62 @@ main {
     width:100%;
 }
 
+.race-select-box{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    width:100%;
+}
+
+.race-opts {
+    display:flex;
+    align-items: flex-start;
+    flex-wrap:wrap;
+    gap:0.3em;
+    max-width: 80%;
+    padding:0.5em;
+}
+
+.race-pace-prefix{
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.race-button{
+    flex:0;
+    margin:0;
+    background-color: var(--toggle-color);   
+    border: none;
+    border-radius:5px;
+    font-size:1.1em;
+    padding: 0.25em;
+    cursor:pointer; 
+    white-space: nowrap;
+}
+
+
 .left-dummy {
     flex:1;
 }
+
+.race-pace{
+    font-weight: bold;
+    font-size:1.2em;
+}
+
+.race-pace-text-box{
+    display:flex;
+    align-items: center;
+    gap: 0.5em;
+    height:2em;
+}
+
+.race-pace-holder{
+    /* border: solid var(--dark-accent) 2px;
+    border-radius: 5px; */
+    padding: 0.2em
+}
+
 
 
 .clock {
@@ -278,9 +331,11 @@ main {
 
 .unit-stack {
     flex: 1;
+    gap: 0.5em;
     display:flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
+    flex-wrap:wrap;
 }
 
 .unit-stack-horiz {
@@ -292,13 +347,10 @@ main {
 }
 
 .pace-toggle {
-    width: 6.25ch;
+    width: 6ch;
     flex: 0;
 }
 
-.wind-toggle {
-    width: 5.5ch
-}
 
 
 .svg-arrow {
@@ -328,15 +380,16 @@ main {
     border-radius:5px;
 }
 
-.unit-toggle, .hill-toggle{
+.unit-toggle {
     background-color: var(--toggle-color);
     border: none;
+    flex: 0;
     border-radius:5px;
     font-size:1.1em;
+    height: 1.6em;
     padding: 0.25em 0.5em;
     margin: 0.2em 0em;
     cursor:pointer;
-    min-width: 3ch;
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
