@@ -2,6 +2,16 @@
 
 // TODO: 
 // 400m mode needs decimals, for sure on output.
+// Need to update paces below the race time
+// Implemetn 200m splits (also with decimals)
+//Implement toggle for unceratinty
+
+
+// Conditonal logic for median vs safe mode
+
+// Limit width of race distance options
+
+// Implement custom race distance as an input thigny (wind custom weight)
 
 // consoel leog an oputpu fo the speed input, in all cases (pace, race time, etc)
 
@@ -13,89 +23,101 @@
 //
 
 // quantile mods
+
+// )
 const qmodParams = {
     "cs_10": {
       "y_outcome": "cs",
       "q_prob": 0.1,
-      "beta0": -12.8108,
-      "beta1_log10_dist": 13.1957,
-      "beta1_log10_time": -8.2239,
-      "beta3_interaction": -0.5948
+      "beta0": -13.5275,
+      "beta1_log10_dist": 13.3616,
+      "beta2_log10_time": -7.7425,
+      "beta3_interaction": -0.7145
     },
     "cs_50": {
       "y_outcome": "cs",
       "q_prob": 0.5,
-      "beta0": -9.5685,
-      "beta1_log10_dist": 12.4182,
-      "beta1_log10_time": -9.1961,
-      "beta3_interaction": -0.3571
+      "beta0": -11.8345,
+      "beta1_log10_dist": 13.0957,
+      "beta2_log10_time": -8.2196,
+      "beta3_interaction": -0.6415
     },
     "cs_90": {
       "y_outcome": "cs",
       "q_prob": 0.9,
-      "beta0": -6.171,
-      "beta1_log10_dist": 11.3505,
-      "beta1_log10_time": -9.9204,
-      "beta3_interaction": -0.1036
+      "beta0": -7.6937,
+      "beta1_log10_dist": 11.9369,
+      "beta2_log10_time": -9.4216,
+      "beta3_interaction": -0.2948
     },
     "cs_minus_10": {
       "y_outcome": "cs_minus",
       "q_prob": 0.1,
-      "beta0": -11.1097,
-      "beta1_log10_dist": 12.519,
-      "beta1_log10_time": -8.6384,
-      "beta3_interaction": -0.4263
+      "beta0": -12.3292,
+      "beta1_log10_dist": 12.6187,
+      "beta2_log10_time": -7.6914,
+      "beta3_interaction": -0.604
     },
     "cs_minus_50": {
       "y_outcome": "cs_minus",
       "q_prob": 0.5,
-      "beta0": -9.5122,
-      "beta1_log10_dist": 12.1969,
-      "beta1_log10_time": -8.9614,
-      "beta3_interaction": -0.3609
+      "beta0": -10.9242,
+      "beta1_log10_dist": 12.5813,
+      "beta2_log10_time": -8.2974,
+      "beta3_interaction": -0.5408
     },
     "cs_minus_90": {
       "y_outcome": "cs_minus",
       "q_prob": 0.9,
-      "beta0": -7.2947,
-      "beta1_log10_dist": 11.707,
-      "beta1_log10_time": -9.6405,
-      "beta3_interaction": -0.2027
+      "beta0": -8.1008,
+      "beta1_log10_dist": 11.9847,
+      "beta2_log10_time": -9.2736,
+      "beta3_interaction": -0.3211
     },
     "cs_plus_10": {
       "y_outcome": "cs_plus",
       "q_prob": 0.1,
-      "beta0": -13.9418,
-      "beta1_log10_dist": 13.7796,
-      "beta1_log10_time": -8.0579,
-      "beta3_interaction": -0.7227
+      "beta0": -14.5271,
+      "beta1_log10_dist": 14.0454,
+      "beta2_log10_time": -7.809,
+      "beta3_interaction": -0.825
     },
     "cs_plus_50": {
       "y_outcome": "cs_plus",
       "q_prob": 0.5,
-      "beta0": -9.212,
-      "beta1_log10_dist": 12.4394,
-      "beta1_log10_time": -9.4646,
-      "beta3_interaction": -0.3137
+      "beta0": -11.7272,
+      "beta1_log10_dist": 13.2364,
+      "beta2_log10_time": -8.4258,
+      "beta3_interaction": -0.6314
     },
     "cs_plus_90": {
       "y_outcome": "cs_plus",
       "q_prob": 0.9,
-      "beta0": -6.039,
-      "beta1_log10_dist": 11.1967,
-      "beta1_log10_time": -9.7281,
-      "beta3_interaction": -0.1041
+      "beta0": -8.7465,
+      "beta1_log10_dist": 12.3211,
+      "beta2_log10_time": -9.0624,
+      "beta3_interaction": -0.4098
     }
   }
-
-
-//console.log(csFit)
   
 
 
-// I do need otuput toggles LOL
+//console.log(qmodParams)
+  
+
+// ---- Setup initial params ----
+
 const RUNNER_SPEED_DEFAULT = 4.62962962962963 // 18:00 5k pace
 let input_m_s = RUNNER_SPEED_DEFAULT // or can just read from pace dials...
+
+let race_dist_m = 5000
+
+// lol global scope
+let minute_val
+let sec_val
+let dec_minutes
+let dec_seconds
+
 
 let output_units = "/mi" // changes when you cahnge output buttons
 
@@ -110,9 +132,7 @@ function updateResult(){
     // notice how we need to read weight here, not externally in global space
     readCurrentSpeed()
     //doPaceCalcs()
-    console.log('--- updating output lookup table ----')
     updateOutput()
-    console.log(`Current speed POST-fxn call: ${input_m_s}`)
 
     //lookupTrainingPaces(input_m_s);
     
@@ -200,21 +220,21 @@ function increment_minutes(digit_object,change){
     const input_units = document.querySelector('#pace-units')
     
     // optoions: 5k, /mi, /km, /400m
-    let limit_lo;
-    let limit_hi;
-    if (input_units.textContent == "5k"){
-        limit_lo = 12
-        limit_hi = 40
-    } else if (input_units.textContent == "/mi"){
-        limit_lo = 3
-        limit_hi = 13
-    } else if (input_units.textContent == "/km"){
-        limit_lo = 2
-        limit_hi = 8
-    } else if (input_units.textContent == "/400m"){
-        limit_lo = 0
-        limit_hi = 3
-    }
+    let limit_lo = 0;
+    let limit_hi = 40;
+    // if (input_units.textContent == "5k"){
+    //     limit_lo = 5
+    //     limit_hi = 40
+    // } else if (input_units.textContent == "/mi"){
+    //     limit_lo = 3
+    //     limit_hi = 13
+    // } else if (input_units.textContent == "/km"){
+    //     limit_lo = 2
+    //     limit_hi = 8
+    // } else if (input_units.textContent == "/400m"){
+    //     limit_lo = 0
+    //     limit_hi = 3
+    // }
     
     
     // disallow high val
@@ -228,6 +248,24 @@ function increment_minutes(digit_object,change){
         digit_object.textContent = digit_val + change
     }
 }
+
+// --- Race distance selectors
+
+const race_buttons = document.querySelectorAll('.race-button');
+// const input_text = document.querySelector('#pace-units')
+// maybe just don't put that up at all?
+
+race_buttons.forEach(button => {
+    button.addEventListener('click', (e) => {
+               // Remove active class from all buttons
+               race_buttons.forEach(btn => btn.classList.remove('active'));
+               // Toggle the active state of the clicked button
+               e.target.classList.toggle('active');
+               setRaceDistance(button);
+            //    input_text.textContent = button.textContent
+               //setPace(button);
+    })
+})
 
 // ------ Unit selectors (Input / output) -------
 
@@ -262,46 +300,85 @@ output_buttons.forEach(button => {
 });
 
 
-function setPace(button){
-    let input_units = document.querySelector('#pace-units')
-    let time_or_pace = document.querySelector('#time-or-pace')
 
-    console.log(input_m_s)
+function setRaceDistance(button){
+    const race_text = button.textContent; // 800m 5k, etc
+    console.log('Fire setRaceDistance!')
 
-    // original_units is "from", button.textContent is "to"
-
-    input_units.textContent = button.textContent;
-    
-    if (button.textContent == '5k') {
-        time_or_pace.textContent = 'time'
+    if (race_text == 'custom'){
+        // lol i dunno what to do here yet
     } else {
-        time_or_pace.textContent = 'pace'
+        let race_dist_m = race_dict[race_text]
+        readCurrentSpeed();
+        console.log('Updated race distance is:')
+        console.log(race_dist_m)
+        console.log('Updated race speed is:')
+        console.log(race_dist_m)
     }
-    
-    // Also need to "translate" paces across, and institute limits on values?
-
-
-    // now can use input_ms which is still what was on original unit dials
-
-
-    // Get function to convert m/s --> pace in target output unit (e.g. per km)
-    const convert_fxn = convert_dict[button.textContent]
-    const convert_text = convert_fxn(input_m_s)
-    
-
-    // now split... 
-
-    // may need a "secret" decimal place?
-    
-    const [minutes, seconds] = convert_text.split(':');
-
-    d1.textContent = minutes
-    d2.textContent = seconds[0]
-    d3.textContent = seconds[1]
-
-    // Now update dial text
-    //d1.textContent = minutes
 }
+
+
+
+const race_dict = {
+    // key/value pairs of race name (string) and distance (m)
+    '800m':800,
+    '1000m':1000,
+    '1200m':1200,
+    '1600m':1600,
+    'Mile':1609.344,
+    '3000m':3000,
+    '3200m':3200,
+    '2 mi':3218.688,
+    '4 km':4000,
+    '5 km':5000,
+    '6 km':6000,
+    '8 km': 8000,
+    '10 km':10000
+}
+
+
+
+
+// function setPace(button){
+//     let input_units = document.querySelector('#pace-units')
+//     let time_or_pace = document.querySelector('#time-or-pace')
+
+//     console.log(input_m_s)
+
+//     // original_units is "from", button.textContent is "to"
+
+//     input_units.textContent = button.textContent;
+    
+//     if (button.textContent == '5k') {
+//         time_or_pace.textContent = 'time'
+//     } else {
+//         time_or_pace.textContent = 'pace'
+//     }
+    
+//     // Also need to "translate" paces across, and institute limits on values?
+
+
+//     // now can use input_ms which is still what was on original unit dials
+
+
+//     // Get function to convert m/s --> pace in target output unit (e.g. per km)
+//     const convert_fxn = convert_dict[button.textContent]
+//     const convert_text = convert_fxn(input_m_s)
+    
+
+//     // now split... 
+
+//     // may need a "secret" decimal place?
+    
+//     const [minutes, seconds] = convert_text.split(':');
+
+//     d1.textContent = minutes
+//     d2.textContent = seconds[0]
+//     d3.textContent = seconds[1]
+
+//     // Now update dial text
+//     //d1.textContent = minutes
+// }
 
 
 
@@ -321,9 +398,7 @@ function parseTime(timeString) {
 
 // Make output match input
 function setOutputText(button){
-
     output_units = button.textContent;
-
     const resultUnits = document.querySelectorAll('.result-units');
 
     // need a query selector and drop in too
@@ -333,36 +408,37 @@ function setOutputText(button){
 }
 
 
-
-
 // ----- Reading speed from digits
 function readCurrentSpeed(){
     // Pace mode
     // read mm:ss
-    var minute_val = parseInt(d1.textContent)
-    var sec_val = 10*parseInt(d2.textContent) + parseInt(d3.textContent)
-    var dec_minutes = minute_val + sec_val/60
+    minute_val = parseInt(d1.textContent)
+    sec_val = 10*parseInt(d2.textContent) + parseInt(d3.textContent)
+    dec_minutes = minute_val + sec_val/60
+    dec_seconds = dec_minutes*60
 
-    console.log('READING PACE UNITS')
+    console.log('READING RACE UNITS')
+    console.log(`Thinks race dist is: ${race_dist_m}`)
+    console.log(`Thinks race duration is: ${dec_minutes}`)
+    console.log(`Thinks race speed is: ${race_dist_m / dec_seconds}`)
 
-    const pace_units = document.querySelector('#pace-units').textContent
 
-    console.log(pace_units)
+    input_m_s = race_dist_m / dec_seconds
+    // meters per second
 
-
-    if (pace_units == "/mi"){
-        //Convert to m/s
-        input_m_s = 1609.344/(60*dec_minutes)
-    } else if (pace_units == "/km"){
-        //Convert to m/s
-        input_m_s = 1000/(60*dec_minutes)
-    } else if (pace_units == "5k"){
-        console.log('FIRE')
-        console.log(dec_minutes)
-        input_m_s = 5000/(60*dec_minutes)
-    } else if (pace_units == "/400m"){
-        input_m_s = 400/(60*dec_minutes)
-    }
+    // if (pace_units == "/mi"){
+    //     //Convert to m/s
+    //     input_m_s = 1609.344/(60*dec_minutes)
+    // } else if (pace_units == "/km"){
+    //     //Convert to m/s
+    //     input_m_s = 1000/(60*dec_minutes)
+    // } else if (pace_units == "5k"){
+    //     console.log('FIRE')
+    //     console.log(dec_minutes)
+    //     input_m_s = 5000/(60*dec_minutes)
+    // } else if (pace_units == "/400m"){
+    //     input_m_s = 400/(60*dec_minutes)
+    // }
 
     
     console.log('*****')
@@ -428,7 +504,11 @@ function decimal_pace_to_string(pace_decimal){
 
 
 function updateOutput(){
-    console.log('FIRE OUTPUT UPDATE')
+  console.log('FIRE OUTPUT UPDATE')
+  readCurrentSpeed()
+
+  let cs_results = lookupTrainingPaces();
+
   let out_text_threshold = document.querySelector('#threshold-pace')
   let out_text_cv = document.querySelector('#cv-pace')
   let out_text_vo2max = document.querySelector('#vo2max-pace')
@@ -438,7 +518,7 @@ function updateOutput(){
 
 
   if (!Number.isFinite(input_m_s) || Number.isNaN(cs_results['cs_minus'])){
-    // Actually only need cs minsu snice rest will also be NaN
+    // Actually only need cs minus snice rest will also be NaN
       // If we get any funny business...hmm
       out_text_threshold.textContent = '🤔' // hmm
       out_text_cv.textContent = '🤔' // hmm
@@ -447,81 +527,64 @@ function updateOutput(){
     console.log('fire inner else')
     const convert_fxn = convert_dict[output_units]
 
-    out_text_threshold.textContent = convert_fxn(cs_results['cs_minus'])
-    out_text_cv.textContent = convert_fxn(cs_results['cs'])
-    out_text_vo2max.textContent = convert_fxn(cs_results['cs_plus'])
+    out_text_threshold.textContent = convert_fxn(cs_results['cs_minus_10'])
+    out_text_cv.textContent = convert_fxn(cs_results['cs_50'])
+    out_text_vo2max.textContent = convert_fxn(cs_results['cs_plus_90'])
 
 
 
-    console.log(cs_results)
-    console.log(`Predicted CS in ${output_units}: ${convert_fxn(cs_results['cs'])}`)
-    console.log('adsfasdf')
-
-      
-      
   }
 
-  //Update text in doc
 }
 
 
 
 
+// {"cs_10": {
+//     "y_outcome": "cs",
+//     "q_prob": 0.1,
+//     "beta0": -13.5275,
+//     "beta1_log10_dist": 13.3616,
+//     "beta2_log10_time": -7.7425,
+//     "beta3_interaction": -0.7145
+//   }
+// }
+
+// also cs_minus_90 etc etc
+
+// y ~ 1 + x1 + x2 + x1:x2
+function predictQMod(y_outcome, log10_dist, log10_time) {
+    const params = qmodParams[y_outcome];
+    const beta0 = params["beta0"];
+    const beta1x1 = params["beta1_log10_dist"] * log10_dist;
+    const beta2x2 = params["beta2_log10_time"] * log10_time;
+    const beta3x3 = params["beta3_interaction"] * log10_dist * log10_time;
+
+    return beta0 + beta1x1 + beta2x2 + beta3x3;
+}
+
+
 // Lookup function
 // Given a grid of speeds speed_grid, and a metaboic cost in W/kg at each speed cost_grid,
 // return the speed whose metabolic cost most closely matches cost_query
-function lookupTrainingPaces(fivek_speed_query) {
-    
-    // fivek_speed_grid is csFit['fivek_speed']
+function lookupTrainingPaces() {
 
-    let cs_minus_ms;
-    let cs_ms;
-    let cs_plus_ms;
+    let log10_dist = Math.log10(race_dist_m)
+    let log10_time = Math.log10(dec_seconds)
 
-    const speed_grid = csFit['fivek_speed']
-
-    // Check if x is outside the range of speed_m_s
-    if (fivek_speed_query < speed_grid[0] || fivek_speed_query > speed_grid[speed_grid.length - 1]) {
-        //throw new Error('x is outside of the range of the speed_m_s column');
-        console.log('Speed query is outside range of the grid!')
-        cs_minus_ms = NaN;
-        cs_ms = NaN;
-        cs_plus_ms = NaN;
-    } else {
-        // Find the indices that x falls between
-        let i = 0;
-        for (; i < speed_grid.length - 1; i++) {
-            if (fivek_speed_query >= speed_grid[i] && fivek_speed_query <= speed_grid[i + 1]) {
-                break;
-            }
-        }
-
-        console.log(`Fivek speed query: ${fivek_speed_query}`)
-        console.log(`Index of closest speed: ${i}`)
-        console.log(`Speed at index: ${speed_grid[i]}`)
-
-        cs_minus_ms = csFit['cs_minus'][i]
-        console.log(`CS minus at index: ${cs_minus_ms}`)
-
-        cs_ms = csFit['cs'][i]
-        console.log(`CS at index: ${cs_ms}`)
-
-        cs_plus_ms = csFit['cs_plus'][i]
-        console.log(`CS plus at index: ${cs_plus_ms}`)
-
-        // Linear interpolation
-        // y = y0 + (y1 - y0) * ((x - x0) / (x1 - x0))
-        //f_x = speed_grid[i] + (speed_grid[i + 1] - speed_grid[i]) * ((fivek_speed_query - speed_grid[i]) / (speed_grid[i + 1] - speed_grid[i]));
-        // f(x) approximation
-
+    // Predict and return as dict
+    const cs_results = {
+        'cs_minus_10':predictQMod("cs_minus_10", log10_dist, log10_time),
+        'cs_minus_90':predictQMod("cs_minus_90", log10_dist, log10_time),
+        'cs_10':predictQMod("cs_10", log10_dist, log10_time),
+        'cs_50':predictQMod("cs_50", log10_dist, log10_time),
+        'cs_90':predictQMod("cs_90", log10_dist, log10_time),
+        'cs_plus_10':predictQMod("cs_plus_10", log10_dist, log10_time),
+        'cs_plus_90':predictQMod("cs_plus_90", log10_dist, log10_time)
     }
-    
-    const cs_results = {'cs_minus':cs_minus_ms,
-        'cs':cs_ms,
-        'cs_plus':cs_plus_ms
-    }
-    //console.log(cs_results)
+    console.log(cs_results)
     return cs_results;
+
 }
 
 

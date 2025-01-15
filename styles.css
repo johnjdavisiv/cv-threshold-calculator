@@ -13,6 +13,7 @@
     --toggle-color: #e9ecef;
     --slider-width: 54px;
     --slider-height: 30px;
+    --uncertainty-color: #475569;
 
     --scale-factor: 0.9;
     --dial-size: calc(200px * var(--scale-factor));
@@ -245,6 +246,7 @@ main {
 
 
 
+
 /* Pace input */
 /* Pace input dials */
 
@@ -262,6 +264,12 @@ main {
     justify-content: center;
     width:100%;
 }
+/* 
+#pace-units {
+    white-space: nowrap; 
+    font-family: 'Roboto', sans-serif;
+} */
+
 
 .race-select-box{
     display:flex;
@@ -320,6 +328,9 @@ main {
 }
 
 
+.uncertainty-col{
+    display:none;
+}
 
 .clock {
     flex:1;
@@ -329,12 +340,18 @@ main {
     align-items: center;
 }
 
+.out-label{
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
 .unit-stack {
     flex: 1;
     gap: 0.5em;
     display:flex;
     flex-direction: row;
     justify-content: center;
+    
     flex-wrap:wrap;
 }
 
@@ -343,6 +360,7 @@ main {
     display:flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
     gap: 0.3em;
 }
 
@@ -430,6 +448,10 @@ main {
 }
 
 
+.mode-toggle{
+    white-space: nowrap;;
+}
+
 .unit-row {
     white-space: nowrap;
     width:100%;
@@ -438,8 +460,35 @@ main {
     gap: 0.2em;
 }
 
+/* td {
+    border: solid red 1px;
+} */
 
 /* Results */
+
+
+/* .output-pace, .result-units{
+} */
+
+.range-row {
+    display:flex;
+    gap: 0.5em;
+}
+.output-range, .range-header {
+    color: var(--uncertainty-color);
+    font-size: 0.8em;
+}
+
+.range-header {
+    display:flex;
+    align-items: center;
+}
+
+.result-table {
+    flex:1;
+    max-width: 400px;
+}
+
 
 .pace-result-box{
     display:flex;
