@@ -177,7 +177,7 @@ function increment_minutes(digit_object,change){
     
     // optoions: 5k, /mi, /km, /400m
     let limit_lo = 0;
-    let limit_hi = 40;
+    let limit_hi = 99;
     // if (input_units.textContent == "5k"){
     //     limit_lo = 5
     //     limit_hi = 40
