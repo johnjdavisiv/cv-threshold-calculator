@@ -13,7 +13,7 @@
     --toggle-color: #e9ecef;
     --slider-width: 54px;
     --slider-height: 30px;
-    --uncertainty-color: #475569;
+    --uncertainty-color: #64748b;
 
     --scale-factor: 0.9;
     --dial-size: calc(200px * var(--scale-factor));
@@ -327,10 +327,10 @@ main {
     padding: 0.2em
 }
 
-
+/* 
 .uncertainty-col{
     display:none;
-}
+} */
 
 .clock {
     flex:1;
@@ -362,6 +362,7 @@ main {
     justify-content: center;
     align-items: center;
     gap: 0.3em;
+    margin: 0.3em 0;
 }
 
 .pace-toggle {
@@ -414,7 +415,7 @@ main {
     user-select: none; /* Standard */
 }
 
-.metric-toggle{
+.custom-toggle{
     font-size:1em;
 }
 
@@ -427,6 +428,10 @@ main {
     display:flex;
     justify-content: center;
     padding: 0.25em;
+}
+
+.results-div {
+    padding: 0;
 }
 
 .wind-type-spacer {
@@ -470,14 +475,20 @@ main {
 /* .output-pace, .result-units{
 } */
 
+
+.result-units {
+    font-size: 0.7em;
+}
+
 .range-row {
     display:flex;
     gap: 0.5em;
 }
 .output-range, .range-header {
     color: var(--uncertainty-color);
-    font-size: 0.8em;
+    font-size: 0.9em;
 }
+
 
 .range-header {
     display:flex;
@@ -584,15 +595,19 @@ main {
     font-size:1.5em;
 }
 
-.height-weight-unit{
+.custom-dist-unit{
     font-weight:bold;
 }
 
 
-.height-weight-input {
+.race-input {
     font-size:1em;
-    width: 5ch;
+    width: 7ch;
     margin: 0 0.3em;
+}
+
+#custom-km, #custom-mi {
+    width: 5ch;
 }
 
 /* Smaller input box for height/weight */
@@ -600,6 +615,77 @@ main {
     width:4ch
 }
 
+.uncertainty-text {
+    color: var(--uncertainty-color);
+    font-size: 1.2em;
+}
+
+
+.active-uncertainty-text {
+    color:var(--soft-black);
+    font-weight: bold;
+}
+
+.uncertainty-toggle-div{
+    display:flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.alert-inner {
+    width: 100%;
+    display:flex;
+    align-items: center;
+    background-color: #a5f3fc;
+    border-radius: 10px;
+    padding: 0.4em;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05); 
+}
+
+.info-inner, .impossible-inner {
+    width: 100%;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #a5f3fc;
+    border-radius: 10px;
+    padding: 0.4em;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05); 
+}
+
+
+.bulb-icon {
+    text-decoration: none;
+    background-color: white;;
+    cursor: pointer;
+    flex: 0 0 auto;
+    font-weight: bold;
+    font-size: 1.25em;
+    border-radius: 50%;
+    display: flex;
+    height: 1.25em;
+    width: 1.25em;
+    border: solid var(--alert-color) 2px;
+    padding: 0.5em;
+    align-items: center;
+    justify-content: center;
+}
+
+.bulb-icon a{
+    text-decoration: none;
+    color: var(--alert-color);
+}
+
+
+.alert-text {
+    text-align: center;
+    color: var(--soft-black);
+    padding: 0 1em;
+}
+
+.alert-box {
+    margin: 0.5em 0;
+}
 
 
 /* Reset wind container with cleaner layout */
@@ -879,7 +965,7 @@ tr:hover {
 
 /* Hover only on mice */
 @media (hover: hover) {
-    .svg-arrow:hover, .pct-button:hover, .unit-toggle:hover, .hill-toggle:hover {
+    .svg-arrow:hover, .pct-button:hover, .unit-toggle:hover, .race-button:hover {
         background-color: var(--hover-color);
         box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.12);
     }
@@ -944,6 +1030,7 @@ tr:hover {
         /* only vc it looks slightly bad on desktop */
         color:var(--primary-color);
     }
+    
 }
 
 

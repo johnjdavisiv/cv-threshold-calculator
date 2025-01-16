@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:title" content="Headwind and tailwind calculator for runners">
+    <meta property="og:title" content="Threshold, CV pace, and VO2max pace calculator for runners">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://apps.runningwritings.com/wind-calculator/">
-    <meta property="og:image" content="https://apps.runningwritings.com/wind-calculator/images/wind-app-social-card-1200px.png">
-    <meta property="og:description" content="Calculate the effects of headwinds and tailwinds on your pacing for workout and races.">
+    <meta property="og:url" content="https://apps.runningwritings.com/cv-threshold-calculator/">
+    <meta property="og:image" content="https://apps.runningwritings.com/cv-threshold-calculator/images/threshold-cv-app-social-card.webp">
+    <meta property="og:description" content="Get workout paces for threshold, CV, and VO2max training sessions.">
     <meta property="og:site_name" content="Running Writings">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Headwind and tailwind calculator for runners">
-    <meta name="twitter:description" content="Calculate the effects of headwinds and tailwinds on your pacing for workout and races.">
-    <meta name="twitter:image" content="https://apps.runningwritings.com/wind-calculator/images/wind-app-social-card-1200px.png">
+    <meta name="twitter:title" content="Threshold, CV pace, and VO2max pace calculator for runners">
+    <meta name="twitter:description" content="Get workout paces for threshold, CV, and VO2max training sessions.">
+    <meta name="twitter:image" content="https://apps.runningwritings.com/cv-threshold-calculator/images/threshold-cv-app-social-card.webp">
     <meta name="author" content="John J Davis, PhD">
     <title>Threshold, CV pace, and VO2max pace calculator for runners - from Running Writings</title>
-    <link rel="icon" href="https://apps.runningwritings.com/wind-calculator/images/RW-favicon.png" type="image/png">
+    <link rel="icon" href="https://apps.runningwritings.com/cv-threshold-calculator/images/RW-favicon.png" type="image/png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -63,11 +63,14 @@
                 </div>
                 <div class="left-dummy"></div>
             </div>
+            <div class="spacer">
+                <span>For&nbsp;</span><span id="race-dist-text">5 km</span>                
+            </div>
             <div class="race-pace-text-box">
                 <span class="race-pace-prefix">Pace:</span>
-                <span class="race-pace-holder"><span class="race-pace">5:43</span><span>/mi</span></span>
-                <span class="race-pace-holder"><span class="race-pace">2:52</span><span>/km</span></span>
-                <span class="race-pace-holder"><span class="race-pace">1:26.0</span><span>/400m</span></span>
+                <span class="race-pace-holder"><span class="race-pace" id="pace-per-mi">5:43</span><span>/mi</span></span>
+                <span class="race-pace-holder"><span class="race-pace" id="pace-per-km">2:52</span><span>/km</span></span>
+                <span class="race-pace-holder"><span class="race-pace" id="pace-per-400">1:26.0</span><span>/400m</span></span>
             </div>
             <div class="race-select-box">
                 <div class="left-dummy"></div>
@@ -77,7 +80,7 @@
                     <button class="race-button">1200m</button>
                     <button class="race-button">1500m</button>
                     <button class="race-button">1600m</button>
-                    <button class="race-button">Mile</button>
+                    <button class="race-button">1 mi</button>
                     <button class="race-button">3000m</button>
                     <button class="race-button">3200m</button>
                     <button class="race-button">2 mi</button>
@@ -86,26 +89,48 @@
                     <button class="race-button">6 km</button>
                     <button class="race-button">8 km</button>
                     <button class="race-button">10 km</button>
-                    <button class="race-button">custom</button>
+                    <button class="race-button">custom distance</button>
                 </div>
                 <div class="left-dummy"></div>
             </div>
-            <div class="spacer effort-container">
-                <!-- <a href="#time-or-pace" class="i-note">?</a> -->
-                <span id="result-pre"><strong>Training paces:</strong></span>
-                
+            <div class="advanced-content" id="advanced-content">
+                <!-- ADD "expanded" HERE ^^^ for testing -->
+                <div class="input-row custom-dist-opt" id="meters-input-div">
+                    <span class="input-text">Distance:&nbsp;</span>
+                    <input class="race-input" id="custom-m" type="number" inputmode="numeric" step="1" value="5000" min="500" max="12000">
+                    <label for="custom-m" class="custom-dist-unit" id="custom-unit-m">m</label>
+                </div>
+                <div class="input-row custom-dist-opt hidden" id="miles-input-div">
+                    <span class="input-text">Distance:&nbsp;</span>
+                    <input class="race-input" id="custom-mi" type="number" inputmode="decimal" step="0.1" value="3.1" min="0.4" max="7.5">
+                    <label for="custom-mi" class="custom-dist-unit" id="custom-unit-mi">mi</label>
+                </div>
+                <div class="input-row custom-dist-opt hidden" id="kilometers-input-div">
+                    <span class="input-text">Distance:&nbsp;</span>
+                    <input class="race-input" id="custom-km" type="number" inputmode="decimal" step="0.1" value="5.0" min="0.5" max="12">
+                    <label for="custom-km" class="custom-dist-unit" id="custom-unit-km">km</label>
+                </div>
+                <div class="input-row">
+                    <div class="unit-togglebox">
+                        <button class="custom-toggle unit-toggle active">meters</button>
+                        <button class="custom-toggle unit-toggle">miles</button>
+                        <button class="custom-toggle unit-toggle">kilometers</button>
+                    </div>
+                </div>
             </div>
             <div class="spacer">
+                <span><strong>Training paces:</strong></span>                
+            </div>
+            <div class="spacer results-div">
                 <table class="result-table">
-                    <tr class="uncertainty-col">
+                    <tr>
                         <td></td>
-                        <td></td>
-                        <td class="range-row"><span class="range-header">Range</span><a href="#time-or-pace" class="i-note">?</a></td>
-                      </tr>
+                        <td><span class="range-header">&nbsp;</span></td>
+                        <td><span class="range-header uncertainty-col hidden">Range</span></td>
                     <tr>
                         <td>Threshold</td>
                         <td><span class="output-pace" id="threshold-pace">12:34</span><span class="result-units">/mi</span></td>
-                        <td class="uncertainty-col">
+                        <td class="uncertainty-col hidden">
                             <span class="output-range" id="threshold-lo">12:34</span>
                             <span class="output-range output-dash">&ndash;</span>
                             <span class="output-range" id="threshold-hi">12:34</span>
@@ -114,48 +139,112 @@
                     <tr>
                       <td>CV</td>
                       <td><span class="output-pace" id="cv-pace">12:34</span><span class="result-units">/mi</span></td>
-                      <td class="uncertainty-col">
-                        <span class="output-range" id="threshold-lo">12:34</span>
+                      <td class="uncertainty-col hidden">
+                        <span class="output-range" id="cv-lo">12:34</span>
                         <span class="output-range output-dash">&ndash;</span>
-                        <span class="output-range" id="threshold-hi">12:34</span>
+                        <span class="output-range" id="cv-hi">12:34</span>
                     </td>
                     </tr>
                     <tr>
                       <td>VO2max</td>
                       <td><span class="output-pace" id="vo2max-pace">12:34</span><span class="result-units">/mi</span></td>
-                      <td class="uncertainty-col">
-                        <span class="output-range" id="threshold-lo">12:34</span>
+                      <td class="uncertainty-col hidden">
+                        <span class="output-range" id="vo2max-lo">12:34</span>
                         <span class="output-range output-dash">&ndash;</span>
-                        <span class="output-range" id="threshold-hi">12:34</span>
+                        <span class="output-range" id="vo2max-hi">12:34</span>
                     </td>
                     </tr>
                   </table>
+            </div>
+            <div class="alert-box hidden">
+                <div class="alert-inner">
+                    <span class='alert-text'>⚠️ Input is outside the model's range!</span>
+                </div>
             </div>
             <div class="unit-stack-horiz">
                 <button class="unit-toggle output-toggle active">/mi</button>
                 <button class="unit-toggle output-toggle">/km</button>
                 <button class="unit-toggle output-toggle">/400m</button>
                 <button class="unit-toggle output-toggle">/200m</button>
-                <button class="unit-toggle output-toggle">custom</button>
             </div>
             <div class="calc-mode unit-stack-horiz">
                 <!-- <div class="out-label">Mode:</div> -->
                 <button class="unit-toggle mode-toggle active">Safe estimate</button>
                 <button class="unit-toggle mode-toggle">Median estimate</button>
-                <a href="#time-or-pace" class="i-note">?</a>
+                <a href="#uncertainty-estimates" class="i-note">?</a>
             </div>
-            <div class="toggle-shower">
-                Uncertainty range: off [X] (toggle)
+            <div class="uncertainty-toggle-div">
+                <span class="uncertainty-text">Uncertainty range:</span>
+                <span class="uncertainty-text" id="off-on-text">Off</span>
+                <label class="switch">
+                    <input type="checkbox" unchecked>
+                    <span class="slider round"></span>
+                </label>
             </div>
         <div class="explainer-text">
             <h2 id="how-to-use">How to use<a class="material-icons up" href="#top">arrow_upward</a></h2>
-
-            <p>Explainer text</p>
-            <p>Explainer text</p>
-            <p>Explainer text</p>
-            <p>Explainer text</p>
-            <p>Explainer text</p>
-            <p>Explainer text</p>
+            <p>This app calculates your threshold pace, CV pace, and VO2max pace given a recent race performance. For runners doing physiologically-based training, these paces can be used to produce specific, distinct patterns of physiological response from the body.</p>
+            <p>When you run at <strong>threshold pace</strong> (a.k.a. “LT2 pace” or “T pace”), you are running at the <em>fastest</em> speed that creates a <a href="https://runningwritings.com/2024/08/steady-state-max-for-runners.html">metabolic steady-state</a> over time. At this pace, variables like blood lactate, heart rate, and oxygen consumption (VO2) will be stable over time (<em>though see caveats here</em>). </p>
+            <p>When you run at <strong>CV pace</strong> (a.k.a. “critical velocity” or “critical speed”), you are running exactly at the boundary separating metabolically sustainable and metabolically unsustainable paces. Different physiological variables will tilt towards or away from stability in an unpredictable fashion.</p>
+            <p>When you run at <strong>VO2max pace</strong> (a.k.a. “vVO2max”) you are running at the <em>slowest</em> speed that creates a metabolically unsustainable state over time. At this pace, variables like blood lactate, heart rate, and VO2 will rise inexorably towards their maximum tolerable limit (HRmax and VO2max, in the case of heart rate and VO2).</p>
+            <p>Many modern training systems, particularly American, British, and Norwegian-style training, are focused around workouts that produce these three distinct patterns of physiological response. Athletes and coaches associated with these physiologically-based approaches include Jack Daniels, Tom “Tinman” Schwartz, Peter and Sebastian Coe, Marius Bakken, and Jakob Ingebrigtsen.</p>
+            <p>To calculate your training paces, enter your race time (in min:sec) and race distance using the input dials. The calculator supports race distances from 800m to the 10k. I am currently working on adding support for half-marathon and marathon performance, but for the time being, you can convert your HM or marathon time to a 10k time and use that instead.</p>
+            <h2 id="how-it-works">How this calculator works<a class="material-icons up" href="#top">arrow_upward</a></h2>
+            <p>This calculator is based on the <a href="https://runningwritings.com/2024/01/critical-speed-guide-for-runners.html">critical speed model</a>, which is the gold standard in physiology for determining metabolically sustainable and metabolically unsustainable paces. </p>
+            <p>The predictions from this calculator are unique in that they explicitly account for uncertainty in your threshold, CV, and VO2max paces.</p>
+            <p>Because runners differ in their aerobic versus anaerobic orientation—sometimes called being a “fast-twitch” versus a “slow-twitch” runner—two runners at the same performance level can have different values for threshold, CV, and VO2max. </p>
+            <p>This calculator provides a “safe estimate” for each pace which is valid for 90% of runners, as well as the full uncertainty range (from the 10th to 90th percentiles). </p>
+            <p>The predictions from this calculator were developed from data on over 10,000 race performances from over 3,000 runners at the high school and college level competing at distances from 800m to the 10k (data from adults will be added in late February). </p>
+            <p>All of these runners competed at three different distances from 800m to the 5k during the same season, which enables applying the critical speed model to calculate CS, CS+, and CS-, which are the gold-standard estimates for CV, VO2max, and threshold pace, respectively. These estimates come out of considering the possible variation in the true value of a runner's critical speed, given their race performances.</p>
+            <img src="images/Simulate threshold uncertainty for running.png">
+            <h2 id="uncertainty-estimates">Safe estimates, median estimates, and uncertainty ranges<a class="material-icons up" href="#top">arrow_upward</a></h2>
+            <p>This calculator defaults to a “safe estimate” of threshold pace, which is a pace that will produce a metabolic steady-state for 90% of runners.</p>
+            <p>The same approach is used for VO2max pace: it defaults to a pace that will produce a metabolically unsustainable state for 90% of runners.</p>
+            <p>Why is <strong>safe estimate</strong> the default?</p>
+            <p>Consider the following case, which shows the distribution of threshold pace among runners who are in 18:00 5k shape: </p>
+            <img src="images/Predicting threshold pace for runners.png">
+            <p>A traditional threshold calculator app would just predict the average of that distribution (which is 6:08/mi). However, at 6:08/mi, any given 18:00 5k runner has a 50/50 chance of being in a metabolically unsustainable state!</p>
+            <p>If your goal in training is to produce a specific metabolic response, you want to do it in a <em>reliable</em> way. For that reason, by default this calculator uses a <strong>safe estimate</strong> that predicts a pace at which 90% of runners will be at a metabolic steady-state</p>
+            <p>If you want an estimate that's closer to what you'd get from a traditional calculator, like the VDOT app, Tinman's calculator, or the McMillan calculator, just use the <strong>median estimate</strong> mode instead—that will predict the 50th percentile instead. </p>
+            <p>Since CV pace is intentionally trying to be right at the 50th percentile, straddling metabolic stability and instability, the calculator returns the 50th percentile for CV pace in both modes.</p>
+            <p>If you want to see the full range of plausible paces for threshold, CV, and VO2max pace, just flip the toggle to enable <strong>uncertainty range</strong> to see the full 10th to 90th percentiles. The uncertainty range corresponds to this range of paces: </p>
+            <img src="images/Threshold pace uncertainty - full range.png">
+            <h2>Threshold, CV, and VO2max pace FAQs<a class="material-icons up" href="#top">arrow_upward</a></h2>
+            <h3 id="why-is-my-predicted-vo2max-pace-slower-than-other-calculators-">Why is my predicted VO2max pace slower than other calculators?</h3>
+            <p>Historically, “VO2max pace” or “vVO2max” (velocity at VO2max) was taken to be the final speed you would reach in a lab-based progressive treadmill test to determine VO2max.</p>
+            <p>As an example, you might start on a treadmill at 10 km/hr, with the speed increasing 1 km/hr every 2 minutes and continuing until exhaustion or until your VO2 hits a plateau. </p>
+            <p>That final speed—or the extrapolated speed based on your actual VO2max and your sub-maximal VO2/speed data—was deemed “the” vVO2max, or VO2max pace. It is that lab-based treadmill ramp speed that most vVO2max calculators are attempting to predict. </p>
+            <p>However, a modern understanding of exercise physiology shows that this approach is flawed. <em>Any</em> speed above your <a href="https://runningwritings.com/2024/08/steady-state-max-for-runners.html">steady-state max (SSmax)</a> will inevitably drive your VO2 up to VO2max; it's just a question of how long. At mile pace, it will take one mile; at 5k pace, it will take five kilometers. </p>
+            <p>Indeed, physiology research shows that “vVO2max” is <a href="https://www.tandfonline.com/doi/abs/10.1080/15438627.2021.1878460">strongly dependent</a> on the treadmill protocol that you use.</p>
+            <p>Moreover, <a href="https://journals.physiology.org/doi/full/10.1152/japplphysiol.01063.2016">around half of all runners</a>—<a href="https://pubmed.ncbi.nlm.nih.gov/12759760/">even international-level elites</a>—cannot sustain their VO2max for any appreciable length of time at all. Their VO2 just rises higher and higher, never reaching a plateau, until eventually they get so exhausted they need to stop.</p>
+            <p>So, in truth, <strong>there is no such thing as a unique vVO2max</strong>, and it makes no sense to argue about whether vVO2max is “6 min race pace” or “12 min race pace.” </p>
+            <p>Instead, the most reasonable definition of “VO2max pace” is the inverse of the way we defined threshold pace: VO2max pace is the <em>slowest</em> speed that will reliably bring your VO2 up to VO2max eventually. Or equivalently, it is the slowest speed that produces a metabolically unsustainable situation inside your body. In practice, this works to be very close to 5k pace. </p>
+            <h3 id="why-is-there-so-much-uncertainty-in-threshold-pace-for-middle-distance-runners-">Why is there so much uncertainty in threshold pace for middle-distance races?</h3>
+            <p>If you turn on the uncertainty ranges, you'll notice that the uncertainty range for race performances over short distances, like 800m and even the mile, are much wider than for events like the 5k or 10k. </p>
+            <p>That'''s because the anaerobic contribution to middle-distance events can be enormous for a runner who is fast-twitch oriented (or miniscule for a runner who is slow-twitch oriented).</p>
+            <p>Take the case of the 800m. The anaerobic contribution to the 800m can be as little as 15% to as much as 35% of total energy expenditure. Clearly, two 800m runners on the low and high ends of this spectrum will have vastly different threshold paces, on account of their differences in aerobic fitness. </p>
+            <p>The wide uncertainty is one reason I prefer to train middle-distance runners using a <a href="https://runningwritings.com/2023/12/percentage-based-training.html">full-spectrum percentage-based approach</a>, in the style of Renato Canova, as opposed to physiological training systems. There's just too much individual variation that a physiology-based system does not account for. </p>
+            <h3 id="are-threshold-cv-and-vo2max-pace-different-for-men-versus-women-">Are threshold, CV, and VO2max pace different for men versus women?</h3>
+            <p><strong>No</strong>, not after accounting for performance level. Men and women at the same level of performance (e.g. 18:00 for 5k) have practically identical threshold, CV, and VO2max paces, at least in this dataset. </p>
+            <h3 id="are-threshold-cv-and-vo2max-pace-different-for-high-school-versus-college-runners-">Are threshold, CV, and VO2max pace different for high school versus college runners?</h3>
+            <p><strong>No</strong>, not after accounting for performance level. To my surprise, high school and college runners do not differ significantly after accounting for performance level, again at least in this dataset.</p>
+            <h3 id="are-these-calculations-valid-for-adult-runners-">Are these calculations valid for adult runners?</h3>
+            <p><strong>Hopefully</strong>. I will be adding data from adult (non-high school, non-college) runners to the model in late February, and then we will have a definite answer!</p>
+            <h3 id="why-can-t-i-use-half-marathon-or-marathon-times-">Why can't I use half-marathon or marathon times?</h3>
+            <p>The critical speed model requires three distinct race performances in a short period of time across races lasting between around two and 20-25 minutes.</p>
+            <p>High school and college track are ideal sources for this kind of data, since athletes regularly compete in events from 800m to 5k.</p>
+            <p>At the college level, enough 10k runners also compete at 1500/3000/5000m or 800/1500/5000m to allow for critical speed calculations during the same season that they ran a 10k, and hence create a pair of (critical speed, 10k performance) for the model. </p>
+            <p>Unfortunately, it is very hard to find public data on half marathon and marathon runners who also compete often enough at short distances during a HM/marathon training cycle to create pairs of (critical speed, HM or M performance) to develop a model on. </p>
+            <p>I have a few ideas on this front, but I don't think I will be able to add HM/M capabilities until late spring or early summer of 2025. In the meantime, use your favorite race conversion tool to convert your half marathon or marathon time to a 10k time and use that instead.</p>
+            <h3 id="can-i-see-the-raw-data-you-used-to-develop-this-model-">Can I see the raw data you used to develop this model?</h3>
+            <p><strong>Yes</strong>, you can download it <a href="https://github.com/johnjdavisiv">here on GitHub</a>. I've also included the analysis code that fits the quantile regression models, and the source code for the app itself.</p>            
+            <h2 id="limitations">Limitations and caveats</h2>
+            <p>The critical speed model is very powerful, and is regarded as the gold standard for estimating steady-state max. Even so, this calculator has a few limitations you should keep in mind.</p>
+            <p>The first is the fact that everyone in this dataset <strong>competed at three different distances</strong> during the same season.</p>
+            <p>In many cases, "true" middle-distance runners may only race at 400m&ndash;1000m indoors, and 400m & 800m outdoors.</p>
+            <p> These runners are not in the data used to develop this calculator, and as a result, there may be some selection bias: predictions will be "more aerobic" for the middle distances.</p>
+            <p>This calculator also only spans races that are roughly equivalent to 25:00&ndash;14:00 for 5k, so I do not recommend extrapolating far beyond that range.</p>
+            <p>Lastly, the calculator currently uses data from high school and college runners, not amateur and recreational runners. Later this winter I will be expanding the dataset to address this limitation!</p> 
             <h2 id="get-updates">Support my work<a class="material-icons up" href="#top">arrow_upward</a></h2>
             <p>If you want to find out when I have new apps and research coming out, sign up for my email list below! It's the best way to follow my work.</p>
             <p>If you enjoy my work and want to help support me, be sure to check out my book, <a href="https://amzn.to/46W0CxV"><strong>Modern Training and Physiology</strong></a> - it's available on Amazon as both an eBook and paperback.</p>
@@ -170,7 +259,7 @@
     </main>
     <footer>
         Made by <a class="author-link" href="https://runningwritings.com">John Davis</a>
-        <a href="https://github.com/johnjdavisiv/wind-calculator" target="_blank"><i class="fa fa-github github-icon"></i></a>
+        <a href="https://github.com/johnjdavisiv/cv-calculator" target="_blank"><i class="fa fa-github github-icon"></i></a>
     </footer>
 </body>
 </html>
