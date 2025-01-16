@@ -19,8 +19,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="styles.css?v=1.0.1">
-    <script src="scripts.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="styles.css?v=1.0.0">
+    <script src="scripts.js?v=1.0.0" defer></script>
     <script defer data-domain="apps.runningwritings.com" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
@@ -126,11 +126,11 @@
                     <tr>
                         <td></td>
                         <td><span class="range-header">&nbsp;</span></td>
-                        <td><span class="range-header uncertainty-col hidden">Range</span></td>
+                        <td><span class="range-header uncertainty-col">Range</span></td>
                     <tr>
                         <td>Threshold</td>
                         <td><span class="output-pace" id="threshold-pace">12:34</span><span class="result-units">/mi</span></td>
-                        <td class="uncertainty-col hidden">
+                        <td class="uncertainty-col">
                             <span class="output-range" id="threshold-lo">12:34</span>
                             <span class="output-range output-dash">&ndash;</span>
                             <span class="output-range" id="threshold-hi">12:34</span>
@@ -139,7 +139,7 @@
                     <tr>
                       <td>CV</td>
                       <td><span class="output-pace" id="cv-pace">12:34</span><span class="result-units">/mi</span></td>
-                      <td class="uncertainty-col hidden">
+                      <td class="uncertainty-col">
                         <span class="output-range" id="cv-lo">12:34</span>
                         <span class="output-range output-dash">&ndash;</span>
                         <span class="output-range" id="cv-hi">12:34</span>
@@ -148,7 +148,7 @@
                     <tr>
                       <td>VO2max</td>
                       <td><span class="output-pace" id="vo2max-pace">12:34</span><span class="result-units">/mi</span></td>
-                      <td class="uncertainty-col hidden">
+                      <td class="uncertainty-col">
                         <span class="output-range" id="vo2max-lo">12:34</span>
                         <span class="output-range output-dash">&ndash;</span>
                         <span class="output-range" id="vo2max-hi">12:34</span>
@@ -174,10 +174,10 @@
                 <a href="#uncertainty-estimates" class="i-note">?</a>
             </div>
             <div class="uncertainty-toggle-div">
-                <span class="uncertainty-text">Uncertainty range:</span>
-                <span class="uncertainty-text" id="off-on-text">Off</span>
+                <span class="uncertainty-pre">Uncertainty range:</span>
+                <span class="uncertainty-text active-uncertainty-text" id="off-on-text">On</span>
                 <label class="switch">
-                    <input type="checkbox" unchecked>
+                    <input type="checkbox" checked>
                     <span class="slider round"></span>
                 </label>
             </div>
@@ -237,14 +237,15 @@
             <p>Unfortunately, it is very hard to find public data on half marathon and marathon runners who also compete often enough at short distances during a HM/marathon training cycle to create pairs of (critical speed, HM or M performance) to develop a model on. </p>
             <p>I have a few ideas on this front, but I don't think I will be able to add HM/M capabilities until late spring or early summer of 2025. In the meantime, use your favorite race conversion tool to convert your half marathon or marathon time to a 10k time and use that instead.</p>
             <h3 id="can-i-see-the-raw-data-you-used-to-develop-this-model-">Can I see the raw data you used to develop this model?</h3>
-            <p><strong>Yes</strong>, you can download it <a href="https://github.com/johnjdavisiv">here on GitHub</a>. I've also included the analysis code that fits the quantile regression models, and the source code for the app itself.</p>            
-            <h2 id="limitations">Limitations and caveats</h2>
+            <p><strong>Yes</strong>, you can download it <a href="https://github.com/johnjdavisiv/cv-threshold-calculator">here on GitHub</a>. I've also included the analysis code that fits the quantile regression models, and the source code for the app itself.</p>            
+            <h2 id="limitations">Limitations and caveats<a class="material-icons up" href="#top">arrow_upward</a></h2>
             <p>The critical speed model is very powerful, and is regarded as the gold standard for estimating steady-state max. Even so, this calculator has a few limitations you should keep in mind.</p>
-            <p>The first is the fact that everyone in this dataset <strong>competed at three different distances</strong> during the same season.</p>
+            <p>The first is the fact that everyone in this dataset competed at <strong>three different distances</strong> from 800m to 5k during the same season (indoor or outdoor track).</p>
             <p>In many cases, "true" middle-distance runners may only race at 400m&ndash;1000m indoors, and 400m & 800m outdoors.</p>
-            <p> These runners are not in the data used to develop this calculator, and as a result, there may be some selection bias: predictions will be "more aerobic" for the middle distances.</p>
+            <p> These runners are not in the data used to develop this calculator, and as a result, there may be some selection bias: <strong>predictions will be "too aerobic" for some middle distance runners</strong>.</p>
             <p>This calculator also only spans races that are roughly equivalent to 25:00&ndash;14:00 for 5k, so I do not recommend extrapolating far beyond that range.</p>
-            <p>Lastly, the calculator currently uses data from high school and college runners, not amateur and recreational runners. Later this winter I will be expanding the dataset to address this limitation!</p> 
+            <p>The data are relatively sparse at paces slower than about 20:00 for 5k (and equivalent for other events) so <strong>I do not trust the predictions as much for slower times</strong>. This should be rectified with more data later this winter.</p>
+            <p>Lastly, the calculator currently uses data from high school and college runners, not amateur and recreational runners. Again, later this winter I will be expanding the dataset to address this limitation.</p>
             <h2 id="get-updates">Support my work<a class="material-icons up" href="#top">arrow_upward</a></h2>
             <p>If you want to find out when I have new apps and research coming out, sign up for my email list below! It's the best way to follow my work.</p>
             <p>If you enjoy my work and want to help support me, be sure to check out my book, <a href="https://amzn.to/46W0CxV"><strong>Modern Training and Physiology</strong></a> - it's available on Amazon as both an eBook and paperback.</p>

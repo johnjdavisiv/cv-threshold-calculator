@@ -298,7 +298,7 @@ main {
     background-color: var(--toggle-color);   
     border: none;
     border-radius:5px;
-    font-size:1.1em;
+    font-size:1.3em;
     padding: 0.25em;
     cursor:pointer; 
     white-space: nowrap;
@@ -617,6 +617,11 @@ main {
 
 .uncertainty-text {
     color: var(--uncertainty-color);
+    font-size: 1.2em;
+}
+
+.uncertainty-pre {
+    color: var(--soft-black);
     font-size: 1.2em;
 }
 
