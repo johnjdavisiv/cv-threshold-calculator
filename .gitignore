@@ -1,8 +1,6 @@
 # Node modules
 node_modules/
 
-# Old R code
-analysis/
 
 # Logs
 *.log

@@ -1,80 +1,86 @@
 // John J Davis, RunningWritings.com
 
 // quantile regression model params
+
+// NOTE: These parameters are slightly different from the model parameters from the R code in the public respository.
+//       The reason for this difference is that the public dataset is semi-anonymized by adding ~0.1-0.2 seconds of noise to race times
+//       In practice, this rounding may result in ~1-2 sec/mi differences in predicted paces.
+
 const qmodParams = {
     "cs_10": {
       "y_outcome": "cs",
       "q_prob": 0.1,
-      "beta0": -13.5275,
-      "beta1_log10_dist": 13.3616,
-      "beta2_log10_time": -7.7425,
-      "beta3_interaction": -0.7145
+      "beta0": -13.1819,
+      "beta1_log10_dist": 13.2709,
+      "beta2_log10_time": -7.8902,
+      "beta3_interaction": -0.6755
     },
     "cs_50": {
       "y_outcome": "cs",
       "q_prob": 0.5,
-      "beta0": -11.8345,
-      "beta1_log10_dist": 13.0957,
-      "beta2_log10_time": -8.2196,
-      "beta3_interaction": -0.6415
+      "beta0": -11.5957,
+      "beta1_log10_dist": 13.0242,
+      "beta2_log10_time": -8.3069,
+      "beta3_interaction": -0.6156
     },
     "cs_90": {
       "y_outcome": "cs",
       "q_prob": 0.9,
-      "beta0": -7.6937,
-      "beta1_log10_dist": 11.9369,
-      "beta2_log10_time": -9.4216,
-      "beta3_interaction": -0.2948
+      "beta0": -7.3763,
+      "beta1_log10_dist": 11.8532,
+      "beta2_log10_time": -9.5531,
+      "beta3_interaction": -0.2599
     },
     "cs_minus_10": {
       "y_outcome": "cs_minus",
       "q_prob": 0.1,
-      "beta0": -12.3292,
-      "beta1_log10_dist": 12.6187,
-      "beta2_log10_time": -7.6914,
-      "beta3_interaction": -0.604
+      "beta0": -12.02,
+      "beta1_log10_dist": 12.5419,
+      "beta2_log10_time": -7.8324,
+      "beta3_interaction": -0.5681
     },
     "cs_minus_50": {
       "y_outcome": "cs_minus",
       "q_prob": 0.5,
-      "beta0": -10.9242,
-      "beta1_log10_dist": 12.5813,
-      "beta2_log10_time": -8.2974,
-      "beta3_interaction": -0.5408
+      "beta0": -10.5207,
+      "beta1_log10_dist": 12.4587,
+      "beta2_log10_time": -8.4407,
+      "beta3_interaction": -0.4976
     },
     "cs_minus_90": {
       "y_outcome": "cs_minus",
       "q_prob": 0.9,
-      "beta0": -8.1008,
-      "beta1_log10_dist": 11.9847,
-      "beta2_log10_time": -9.2736,
-      "beta3_interaction": -0.3211
+      "beta0": -7.8144,
+      "beta1_log10_dist": 11.9053,
+      "beta2_log10_time": -9.3831,
+      "beta3_interaction": -0.2909
     },
     "cs_plus_10": {
       "y_outcome": "cs_plus",
       "q_prob": 0.1,
-      "beta0": -14.5271,
-      "beta1_log10_dist": 14.0454,
-      "beta2_log10_time": -7.809,
-      "beta3_interaction": -0.825
+      "beta0": -14.0611,
+      "beta1_log10_dist": 13.9072,
+      "beta2_log10_time": -7.9802,
+      "beta3_interaction": -0.7746
     },
     "cs_plus_50": {
       "y_outcome": "cs_plus",
       "q_prob": 0.5,
-      "beta0": -11.7272,
-      "beta1_log10_dist": 13.2364,
-      "beta2_log10_time": -8.4258,
-      "beta3_interaction": -0.6314
+      "beta0": -11.5433,
+      "beta1_log10_dist": 13.1809,
+      "beta2_log10_time": -8.4918,
+      "beta3_interaction": -0.6116
     },
     "cs_plus_90": {
       "y_outcome": "cs_plus",
       "q_prob": 0.9,
-      "beta0": -8.7465,
-      "beta1_log10_dist": 12.3211,
-      "beta2_log10_time": -9.0624,
-      "beta3_interaction": -0.4098
+      "beta0": -8.5014,
+      "beta1_log10_dist": 12.258,
+      "beta2_log10_time": -9.1644,
+      "beta3_interaction": -0.3833
     }
   }
+  
   
 
 // ---- Setup initial params ----
