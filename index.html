@@ -72,9 +72,9 @@
             </div>
             <div class="race-pace-text-box">
                 <span class="race-pace-prefix">Pace:</span>
-                <span class="race-pace-holder"><span class="race-pace" id="pace-per-mi">5:43</span><span>/mi</span></span>
-                <span class="race-pace-holder"><span class="race-pace" id="pace-per-km">2:52</span><span>/km</span></span>
-                <span class="race-pace-holder"><span class="race-pace" id="pace-per-400">1:26.0</span><span>/400m</span></span>
+                <span class="race-pace-holder"><span class="race-pace" id="pace-per-mi">5:48</span><span>/mi</span></span>
+                <span class="race-pace-holder"><span class="race-pace" id="pace-per-km">3:36</span><span>/km</span></span>
+                <span class="race-pace-holder"><span class="race-pace" id="pace-per-400">1:26.4</span><span>/400m</span></span>
             </div>
             <div class="race-select-box">
                 <div class="left-dummy"></div>
@@ -133,29 +133,29 @@
                         <td><span class="range-header uncertainty-col">90% Range</span></td>
                     <tr>
                         <td>Threshold</td>
-                        <td><span class="output-pace" id="threshold-pace">12:34</span><span class="result-units">/mi</span></td>
+                        <td><span class="output-pace" id="threshold-pace">6:23</span><span class="result-units">/mi</span></td>
                         <td class="uncertainty-col">
-                            <span class="output-range" id="threshold-lo">12:34</span>
+                            <span class="output-range" id="threshold-lo">6:03</span>
                             <span class="output-range output-dash">&ndash;</span>
-                            <span class="output-range" id="threshold-hi">12:34</span>
+                            <span class="output-range" id="threshold-hi">6:23</span>
                         </td>
                     </tr>
                     <tr>
                       <td>CV</td>
-                      <td><span class="output-pace" id="cv-pace">12:34</span><span class="result-units">/mi</span></td>
+                      <td><span class="output-pace" id="cv-pace">6:02</span><span class="result-units">/mi</span></td>
                       <td class="uncertainty-col">
-                        <span class="output-range" id="cv-lo">12:34</span>
+                        <span class="output-range" id="cv-lo">5:58</span>
                         <span class="output-range output-dash">&ndash;</span>
-                        <span class="output-range" id="cv-hi">12:34</span>
+                        <span class="output-range" id="cv-hi">6:07</span>
                     </td>
                     </tr>
                     <tr>
                       <td>VO2max</td>
-                      <td><span class="output-pace" id="vo2max-pace">12:34</span><span class="result-units">/mi</span></td>
+                      <td><span class="output-pace" id="vo2max-pace">5:44</span><span class="result-units">/mi</span></td>
                       <td class="uncertainty-col">
-                        <span class="output-range" id="vo2max-lo">12:34</span>
+                        <span class="output-range" id="vo2max-lo">5:44</span>
                         <span class="output-range output-dash">&ndash;</span>
-                        <span class="output-range" id="vo2max-hi">12:34</span>
+                        <span class="output-range" id="vo2max-hi">6:00</span>
                     </td>
                     </tr>
                   </table>
@@ -163,6 +163,11 @@
             <div class="alert-box hidden">
                 <div class="alert-inner">
                     <span class='alert-text'>⚠️ Input is outside the model's range!</span>
+                </div>
+            </div>
+            <div class="extrapolation-box hidden">
+                <div class="extrapolation-inner">
+                    <span class='alert-text'>⚠️ Outside the model's data (800 m – 12 km, 1:30 – 80:00) — these paces are extrapolated</span>
                 </div>
             </div>
             <div class="unit-stack-horiz">
@@ -240,7 +245,7 @@
             <p>High school track, college track, and master's racing circuits (both track and roads) are ideal sources for this kind of data, since athletes regularly compete in events from 800m to 5k.</p>
             <p>At the college and master's level, enough 10k runners also compete at 1500/3000/5000m or 800/1500/5000m to allow for critical speed calculations during the same season that they ran a 10k, and hence create a pair of (critical speed, 10k performance) for the model. </p>
             <p>Unfortunately, it is very hard to find public data on half marathon and marathon runners who also compete often enough at short distances during a HM/marathon training cycle to create pairs of (critical speed, HM or M performance) to develop a model on. </p>
-            <p>I have a few ideas on this front, but I don't think I will be able to add HM/M capabilities until late spring or early summer of 2025. In the meantime, use your favorite race conversion tool to convert your half marathon or marathon time to a 10k time and use that instead.</p>
+            <p>I have a few ideas on this front, but I don't think I will be able to add HM/M capabilities until late spring or early summer of 2026. In the meantime, use your favorite race conversion tool to convert your half marathon or marathon time to a 10k time and use that instead.</p>
             <h3 id="how-does-it-work">How are you calculating critical speed from just one performance?</h3>
             <p>It's true that the critical speed model itself requires three or more performances for a reliable fit. This calculator is essentially a <em>predictive model</em> that tells you what range of CV, threshold, and VO2max paces are compatible with a given level of performance.</p>
             <p>So, the raw data used to "train" this calculator's predictive model does have at least three performances per athlete-season. I use this raw data as the outcome that the predictive model tries to learn, when given only one performance as an input.</p>

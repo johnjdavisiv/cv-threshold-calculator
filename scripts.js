@@ -1662,85 +1662,20 @@ const temodParams = {
 
   
 
-const qmodParams = {
-    "cs_10": {
-      "y_outcome": "cs",
-      "q_prob": 0.1,
-      "beta0": -13.1819,
-      "beta1_log10_dist": 13.2709,
-      "beta2_log10_time": -7.8902,
-      "beta3_interaction": -0.6755
-    },
-    "cs_50": {
-      "y_outcome": "cs",
-      "q_prob": 0.5,
-      "beta0": -11.5957,
-      "beta1_log10_dist": 13.0242,
-      "beta2_log10_time": -8.3069,
-      "beta3_interaction": -0.6156
-    },
-    "cs_90": {
-      "y_outcome": "cs",
-      "q_prob": 0.9,
-      "beta0": -7.3763,
-      "beta1_log10_dist": 11.8532,
-      "beta2_log10_time": -9.5531,
-      "beta3_interaction": -0.2599
-    },
-    "cs_minus_10": {
-      "y_outcome": "cs_minus",
-      "q_prob": 0.1,
-      "beta0": -12.02,
-      "beta1_log10_dist": 12.5419,
-      "beta2_log10_time": -7.8324,
-      "beta3_interaction": -0.5681
-    },
-    "cs_minus_50": {
-      "y_outcome": "cs_minus",
-      "q_prob": 0.5,
-      "beta0": -10.5207,
-      "beta1_log10_dist": 12.4587,
-      "beta2_log10_time": -8.4407,
-      "beta3_interaction": -0.4976
-    },
-    "cs_minus_90": {
-      "y_outcome": "cs_minus",
-      "q_prob": 0.9,
-      "beta0": -7.8144,
-      "beta1_log10_dist": 11.9053,
-      "beta2_log10_time": -9.3831,
-      "beta3_interaction": -0.2909
-    },
-    "cs_plus_10": {
-      "y_outcome": "cs_plus",
-      "q_prob": 0.1,
-      "beta0": -14.0611,
-      "beta1_log10_dist": 13.9072,
-      "beta2_log10_time": -7.9802,
-      "beta3_interaction": -0.7746
-    },
-    "cs_plus_50": {
-      "y_outcome": "cs_plus",
-      "q_prob": 0.5,
-      "beta0": -11.5433,
-      "beta1_log10_dist": 13.1809,
-      "beta2_log10_time": -8.4918,
-      "beta3_interaction": -0.6116
-    },
-    "cs_plus_90": {
-      "y_outcome": "cs_plus",
-      "q_prob": 0.9,
-      "beta0": -8.5014,
-      "beta1_log10_dist": 12.258,
-      "beta2_log10_time": -9.1644,
-      "beta3_interaction": -0.3833
-    }
-  }
-  
 // "Global" level grids (applies to all params)
 const age_grid = temodParams["age_grid"]
 const log10_dist_grid = temodParams["log10_dist_grid"]
 const log10_time_grid = temodParams["log10_time_grid"]
+
+// The te() surface is fitted on this grid (about 800 m - 12 km and 1:30 - 80:00). bilinearInterp() clamps the
+// cell index but not the weights, so a query beyond the edge is linearly extrapolated - flag it in the UI.
+function isOutsideGrid(dist_m, time_s) {
+    const tol = 1e-3 // the grid edges are rounded log10 values (800.02 m, 4799.5 s), so 800 m and 80:00 must count as inside
+    const ld = Math.log10(dist_m)
+    const lt = Math.log10(time_s)
+    return ld < log10_dist_grid[0] - tol || ld > log10_dist_grid[log10_dist_grid.length - 1] + tol
+        || lt < log10_time_grid[0] - tol || lt > log10_time_grid[log10_time_grid.length - 1] + tol
+}
 
 // ---- Setup initial params ----
 const AGE_DEFAULT = 25;
@@ -1751,23 +1686,16 @@ let race_dist_m = 5000
 
 let output_mode = "safe"
 
-// lol global scope
-let minute_val
-let sec_val
-let dec_minutes
 let dec_seconds
 
 
 let output_units = "/mi" // changes when you cahnge output buttons
 
 function updateResult(){
-    readCurrentSpeed()
+    // updateOutput() re-reads the dials itself
     updateOutput()
 }
 
-
-const pace_dials = document.querySelector('#pace-dials')
-const unit_togs = document.querySelector('#input-units')
 
 // Dial and input controls
 // --- Incrementing pace dials --- 
@@ -1812,7 +1740,7 @@ d3_up.addEventListener('click', () => {
 });
 
 d3_down.addEventListener('click', () => {
-    increment_sec_digit(d3,10,-1,5); //floor of 5
+    increment_sec_digit(d3,10,-1);
     updateResult();
 });
 
@@ -1836,10 +1764,7 @@ function increment_sec_digit(digit_object, digit_limit, change){
 
 function increment_minutes(digit_object,change){
     let digit_val = parseInt(digit_object.textContent);
-    //Disallow > 40
-    
-    //Disallow values depending on mode
-    const input_units = document.querySelector('#pace-units')
+    //Disallow > 99
     
     // optoions: 5k, /mi, /km, /400m
     let limit_lo = 0;
@@ -1870,8 +1795,8 @@ race_buttons.forEach(button => {
                race_buttons.forEach(btn => btn.classList.remove('active'));
                // Toggle the active state of the clicked button
                e.target.classList.toggle('active');
-               setRaceDistance(button);
                race_header_text.textContent = button.textContent;
+               setRaceDistance(button);
                updateOutput();
             //    input_text.textContent = button.textContent
                //setPace(button);
@@ -1879,21 +1804,6 @@ race_buttons.forEach(button => {
 })
 
 // ------ Unit selectors (Input / output) -------
-
-
-// Input unit selector
-const pace_buttons = document.querySelectorAll('.pace-toggle');
-
-pace_buttons.forEach(button => {
-    button.addEventListener('click', (e) => {
-        // Remove active class from all buttons
-        pace_buttons.forEach(btn => btn.classList.remove('active'));
-        // Toggle the active state of the clicked button
-        e.target.classList.toggle('active');
-        setPace(button);
-    });
-});
-
 
 
 // Output unit selector
@@ -2022,12 +1932,14 @@ function customInputListener(){
 
 function setCustomRaceDistance(){
     if (custom_mode == "meters") {
-        race_dist_m = m_input.value
+        race_dist_m = Number(m_input.value)
+        race_header_text.textContent = `${Number(m_input.value).toFixed(0)} meters`
     } else if (custom_mode == "miles") {
         race_dist_m = mi_input.value*1609.344
-        // adsfasdfds
+        race_header_text.textContent = `${Number(mi_input.value).toFixed(2)} mi`
     } else if (custom_mode == "kilometers") {
         race_dist_m = km_input.value*1000
+        race_header_text.textContent = `${Number(km_input.value).toFixed(2)} km`
     }
     readCurrentSpeed();
 }
@@ -2070,16 +1982,6 @@ const race_dict = {
 }
 
 
-// converting from dict string pace 
-function parseTime(timeString) {
-    // Split the string into minutes and seconds
-    const [minutes, seconds] = timeString.split(':');
-    // Convert them to integers
-    const minutesInt = parseInt(minutes, 10);
-    const secondsInt = parseInt(seconds, 10);
-    return { minutes: minutesInt, seconds: secondsInt };
-}
-
 // Make output match input
 function setOutputText(button){
     output_units = button.textContent;
@@ -2096,9 +1998,9 @@ function setOutputText(button){
 function readCurrentSpeed(){
     // Pace mode
     // read mm:ss
-    minute_val = parseInt(d1.textContent)
-    sec_val = 10*parseInt(d2.textContent) + parseInt(d3.textContent)
-    dec_minutes = minute_val + sec_val/60
+    const minute_val = parseInt(d1.textContent)
+    const sec_val = 10*parseInt(d2.textContent) + parseInt(d3.textContent)
+    const dec_minutes = minute_val + sec_val/60
     dec_seconds = dec_minutes*60
     input_m_s = race_dist_m / dec_seconds
     // meters per second
@@ -2109,9 +2011,15 @@ function readCurrentSpeed(){
     const km_pace = document.querySelector('#pace-per-km')
     const fourhundred_pace = document.querySelector('#pace-per-400')
 
-    mi_pace.textContent = convert_dict['/mi'](input_m_s)
-    km_pace.textContent = convert_dict['/km'](input_m_s)
-    fourhundred_pace.textContent = convert_dict['/400m'](input_m_s)
+    if (Number.isFinite(input_m_s) && input_m_s > 0) {
+        mi_pace.textContent = convert_dict['/mi'](input_m_s)
+        km_pace.textContent = convert_dict['/km'](input_m_s)
+        fourhundred_pace.textContent = convert_dict['/400m'](input_m_s)
+    } else {
+        mi_pace.textContent = '🤔'
+        km_pace.textContent = '🤔'
+        fourhundred_pace.textContent = '🤔'
+    }
 }
 
 
@@ -2139,22 +2047,6 @@ const convert_dict = {
         // to decimal minutes per km
         conv_dec = 200/(m_s*60)
         return decimal_pace_to_string_dec(conv_dec);
-    },
-    'mph':function (m_s){
-        conv_dec = m_s*2.23694
-        return conv_dec.toFixed(1);
-    },
-    'km/h':function (m_s){
-        conv_dec = m_s*3.6
-        return conv_dec.toFixed(1);
-    },
-    'm/s':function (m_s){
-        // ez mode lol
-        return m_s.toFixed(2);
-    },
-    '5k':function (m_s){
-        conv_dec = 5000/(m_s*60)
-        return decimal_pace_to_string(conv_dec);
     }
 }
 
@@ -2172,7 +2064,7 @@ function decimal_pace_to_string(pace_decimal){
         pace_sec = Math.round(pace_sec);
     }
     //To formatted string
-    res = `${pace_min}:${pace_sec.toString().padStart(2,'0')}` 
+    const res = `${pace_min}:${pace_sec.toString().padStart(2,'0')}`
     return res
 }
 
@@ -2216,7 +2108,8 @@ function decimal_pace_to_string_dec(pace_decimal) {
 function updateOutput(){
   readCurrentSpeed()
 
-  let cs_results = lookupTrainingPaces();
+  // returns a dict w 'cs' 'cs_minus' 'cs_plus' fields, FLOAT m/s entry!
+  const cs_results = lookupTrainingPaces();
 
   let out_text_threshold = document.querySelector('#threshold-pace')
   let out_text_cv = document.querySelector('#cv-pace')
@@ -2231,22 +2124,34 @@ function updateOutput(){
 
   let out_text_vo2max_lo = document.querySelector('#vo2max-lo')
   let out_text_vo2max_hi = document.querySelector('#vo2max-hi')
-  
-  // returns a dict w 'cs' 'cs_minus' 'cs_plus' fields, FLOAT m/s entry! 
-  cs_results = lookupTrainingPaces(input_m_s)
 
-  alert_div = document.querySelector('.alert-box')
+  const alert_div = document.querySelector('.alert-box')
+  const extrap_div = document.querySelector('.extrapolation-box')
 
 
-  if (!Number.isFinite(input_m_s) || Number.isNaN(cs_results['cs_minus']) || input_m_s < 2.1 || input_m_s > 10){
+  if (!Number.isFinite(input_m_s) || Number.isNaN(cs_results['cs_minus_10']) || input_m_s < 2.1 || input_m_s > 10){
     // Actually only need cs minus snice rest will also be NaN
       // If we get any funny business...hmm
       out_text_threshold.textContent = '🤔' // hmm
       out_text_cv.textContent = '🤔' // hmm
       out_text_vo2max.textContent = '🤔' // hmm
+      // ...and don't leave the previous state's ranges standing next to it
+      out_text_threshold_lo.textContent = ''
+      out_text_threshold_hi.textContent = ''
+      out_text_cv_lo.textContent = ''
+      out_text_cv_hi.textContent = ''
+      out_text_vo2max_lo.textContent = ''
+      out_text_vo2max_hi.textContent = ''
       alert_div.classList.remove('hidden')
+      extrap_div.classList.add('hidden')
   } else {
     alert_div.classList.add('hidden')
+    // Inside the speed range but off the fitted grid: the numbers are extrapolated, so say so
+    if (isOutsideGrid(race_dist_m, dec_seconds)) {
+        extrap_div.classList.remove('hidden')
+    } else {
+        extrap_div.classList.add('hidden')
+    }
     const convert_fxn = convert_dict[output_units]
 
     if (output_mode == "safe"){
@@ -2328,49 +2233,6 @@ function predictTeMod(y_outcome, log10_dist, log10_time, age){
     return yhat;    
 }
 
-let test_age_smooth = temodParams["cs_50"]["age_smooth"]
-let test_te_smooth = temodParams["cs_50"]["te_smooth"]
-
-console.log(getShape(test_te_smooth))
-console.log(test_te_smooth[0])
-
-// Example usage:
-const log10_dist_query = 3.2; // 1600m
-const log10_time_query = 2.38; // 4:00
-const interpolated_te_value = bilinearInterp(log10_dist_grid, log10_time_grid, test_te_smooth, log10_dist_query, log10_time_query);
-console.log("Interpolated te value:", interpolated_te_value);
-
-console.log('******************************')
-console.log(bilinearInterp(log10_dist_grid, log10_time_grid, test_te_smooth, 2, 2))
-console.log(bilinearInterp(log10_dist_grid, log10_time_grid, test_te_smooth, 3.2, 2.38))
-console.log(bilinearInterp(log10_dist_grid, log10_time_grid, test_te_smooth, 4, 3))
-console.log(bilinearInterp(log10_dist_grid, log10_time_grid, test_te_smooth, 5, 4))
-console.log('******************************')
-console.log("Interpolated age smooth at zero:", lookupAgeSmooth(test_age_smooth, 25))
-
-
-
-console.log('******* ------  Testing response ------ ************')
-
-console.log(predictTeMod("cs_50", 2, 2, 25))
-console.log(predictTeMod("cs_50", 3.2, 2.38, 25))
-console.log(predictTeMod("cs_50", 4, 3, 25))
-console.log(predictTeMod("cs_50", 5, 4, 25))
-console.log('******************************')
-
-function getShape(arr) {
-    const shape = [];
-    let current = arr;
-    
-    while (Array.isArray(current)) {
-      shape.push(current.length);
-      current = current[0];
-    }
-    
-    return shape;
-  }
-
-
 // Bilinear!!
 /**
  * Performs bilinear interpolation on a 2D matrix.
@@ -2440,17 +2302,6 @@ function bilinearInterp(distGrid, timeGrid, teMatrix, queryDist, queryTime) {
   
 
 
-
-// y ~ 1 + x1 + x2 + x1:x2
-function predictQMod(y_outcome, log10_dist, log10_time) {
-    const params = qmodParams[y_outcome];
-    const beta0 = params["beta0"];
-    const beta1x1 = params["beta1_log10_dist"] * log10_dist;
-    const beta2x2 = params["beta2_log10_time"] * log10_time;
-    const beta3x3 = params["beta3_interaction"] * log10_dist * log10_time;
-
-    return beta0 + beta1x1 + beta2x2 + beta3x3;
-}
 
 function lookupTrainingPaces() {
 
