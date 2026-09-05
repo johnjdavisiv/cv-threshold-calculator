@@ -588,8 +588,12 @@ main {
 /* Results */
 
 
-/* .output-pace, .result-units{
-} */
+/* Every number the calculator prints is PT Mono, same as the dials above it:
+   the paces, the uncertainty ranges, the reference paces on the "Pace:" line,
+   and their units. The row labels and the "80% range" caption stay Roboto. */
+.output-pace, .output-range, .race-pace, .result-units {
+    font-family: 'PT Mono', monospace;
+}
 
 
 .result-units {
@@ -614,6 +618,14 @@ main {
 .result-table {
     flex:1;
     max-width: 400px;
+}
+
+/* The header row and the row labels are <th>, so screen readers can pair each
+   number with its pace. Undo the browser's bold + centred default so they look
+   exactly like the <td>s they replaced. */
+.result-table th {
+    font-weight: inherit;
+    text-align: inherit;
 }
 
 

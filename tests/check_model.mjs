@@ -24,14 +24,16 @@ try {
 }
 
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8').replace(/<script[\s\S]*?<\/script>/g, '');
+const storage = fs.readFileSync(path.join(root, 'rw-storage.js'), 'utf8');
 const script = fs.readFileSync(path.join(root, 'scripts.js'), 'utf8');
 const goldens = JSON.parse(fs.readFileSync(path.join(root, 'cv_goldens_v2026-09-05.json'), 'utf8'));
 const pieces = JSON.parse(fs.readFileSync(path.join(root, 'cv_pieces_v2026-09-05.json'), 'utf8'));
 
-const ACCESSOR = `\nwindow.__m = { cvPieces, predictParams, quantileSpeed, hullStatus, hullBounds, Z, get race_dist_m() { return race_dist_m }, get dec_seconds() { return dec_seconds }, get range_level() { return range_level }, applyState, loadStateFromCookie, DEFAULT_STATE, STATE_COOKIE_NAME };`;
+const ACCESSOR = `\nwindow.__m = { cvPieces, predictParams, quantileSpeed, hullStatus, hullBounds, Z, get race_dist_m() { return race_dist_m }, get dec_seconds() { return dec_seconds }, get range_level() { return range_level }, applyState, loadSavedState, DEFAULT_STATE, APP_ID };`;
 const dom = new JSDOM(html, { runScripts: 'outside-only', url: 'http://localhost/', virtualConsole: new VirtualConsole() });
 const w = dom.window;
 const doc = w.document;
+w.eval(storage);
 w.eval(script + ACCESSOR);
 const m = w.__m;
 
@@ -155,10 +157,10 @@ byText('.range-toggle', '95%').click();
 setTime(13, 45);
 const savedPaces = paces();
 const savedRanges = ranges();
-// (JSON round-trip: the page parses the cookie in its own realm, whose Object prototype is not ours)
+// (JSON round-trip: the page parses the stored state in its own realm, whose Object prototype is not ours)
 const plain = (o) => JSON.parse(JSON.stringify(o));
-const saved = plain(m.loadStateFromCookie());
-assert.ok(doc.cookie.includes(m.STATE_COOKIE_NAME + '='), 'cookie written');
+const saved = plain(m.loadSavedState());
+assert.ok(w.localStorage.getItem('rw.' + m.APP_ID + '.v1'), 'state written to localStorage');
 assert.deepEqual(saved, {
   version: 1, dials: { d1: 13, d2: 4, d3: 5 }, race: 'custom distance', custom: { mode: 'miles', m: 600, mi: 2.5, km: 12 }, // 600 m + 12 km were typed above
   output_unit: '/km', mode: 'safe', range: 95,
@@ -167,7 +169,7 @@ m.applyState(m.DEFAULT_STATE);
 assert.deepEqual(paces(), ['6:12', '6:02', '5:52']);
 assert.equal($('#race-dist-text').textContent, '5 km');
 m.applyState(saved);
-assert.deepEqual(paces(), savedPaces, 'replaying the cookie restores the paces');
+assert.deepEqual(paces(), savedPaces, 'replaying the saved state restores the paces');
 assert.deepEqual(ranges(), savedRanges);
 assert.equal($('#race-dist-text').textContent, '2.50 mi');
 assert.equal($('.mode-toggle.active').textContent, 'Safe estimate');
@@ -188,6 +190,6 @@ assert.deepEqual(paces(), ['6:12', '6:02', '5:52']);
 assert.equal($('.mode-toggle.active').textContent, 'Median estimate');
 assert.equal($('.race-button.active').textContent, '5 km');
 assert.ok(!$('#advanced-content').classList.contains('expanded'));
-assert.deepEqual(plain(m.loadStateFromCookie()), plain(m.DEFAULT_STATE), 'cookie holds the defaults after reset');
+assert.deepEqual(plain(m.loadSavedState()), plain(m.DEFAULT_STATE), 'saved state holds the defaults after reset');
 
-console.log('ui: defaults, mode, range chips, extrapolation banner variants, speed guard, cookie + restore defaults — all as expected');
+console.log('ui: defaults, mode, range chips, extrapolation banner variants, speed guard, saved state + restore defaults — all as expected');

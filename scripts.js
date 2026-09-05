@@ -372,7 +372,10 @@ function revealCustomBox(button){
         km_div.classList.remove('hidden')
         custom_mode = "kilometers"
     }
-    customInputListener();
+    // Settle the box we are switching to, so a value left over from a previous
+    // visit (or from a stale saved state) is brought inside its min/max before
+    // it is shown.
+    customChangeListener();
 }
 
 let m_input = document.getElementById('custom-m')
@@ -384,21 +387,73 @@ m_input.addEventListener('input', customInputListener);
 mi_input.addEventListener('input', customInputListener);
 km_input.addEventListener('input', customInputListener);
 
+// 'change' fires when the box settles (blur or Enter), which is when the typed
+// number gets clamped into the box's own min/max for good.
+m_input.addEventListener('change', customChangeListener);
+mi_input.addEventListener('change', customChangeListener);
+km_input.addEventListener('change', customChangeListener);
+
 function customInputListener(){
     setCustomRaceDistance();
     updateResult();
 }
 
-function setCustomRaceDistance(){
+function customChangeListener(){
+    setCustomRaceDistance(true);
+    updateResult();
+}
+
+const custom_inputs = {
+    meters: m_input,
+    miles: mi_input,
+    kilometers: km_input
+}
+
+// Last in-range value for each box, so an emptied box has something to fall back on
+const last_valid_custom = { meters: 5000, miles: 3.1, kilometers: 5.0 }
+
+// Read a custom-distance box. The min/max on the three inputs used to be
+// decorative: a typed 50000 was taken at face value, and an empty box read as
+// zero, giving a "0 meters" header next to a misleading out-of-range warning.
+// Now the number that actually drives the calculator is always inside the box's
+// own min/max, and an empty or unparseable box keeps the last good value.
+// `settle` (the change event) also writes the clamped number back into the box,
+// so what you see is what is being used.
+//
+// While you are still typing, only the upper bound is enforced: every prefix of
+// an in-range number is below the maximum, so a value over the maximum is never
+// on its way to a valid one. The lower bound waits until the box settles, which
+// leaves "3" on the way to "3000" alone.
+function readCustomInput(mode, settle){
+    const input = custom_inputs[mode]
+    const lo = parseFloat(input.min)
+    const hi = parseFloat(input.max)
+    const raw = parseFloat(input.value)
+
+    if (!Number.isFinite(raw) || raw <= 0) {
+        if (settle) input.value = last_valid_custom[mode]
+        return last_valid_custom[mode]
+    }
+
+    const val = settle ? Math.min(Math.max(raw, lo), hi) : Math.min(raw, hi)
+    if (settle && val !== raw) input.value = val
+    if (val >= lo && val <= hi) last_valid_custom[mode] = val
+    return val
+}
+
+function setCustomRaceDistance(settle = false){
     if (custom_mode == "meters") {
-        race_dist_m = Number(m_input.value)
-        race_header_text.textContent = `${Number(m_input.value).toFixed(0)} meters`
+        const meters = readCustomInput('meters', settle)
+        race_dist_m = meters
+        race_header_text.textContent = `${meters.toFixed(0)} meters`
     } else if (custom_mode == "miles") {
-        race_dist_m = mi_input.value*1609.344
-        race_header_text.textContent = `${Number(mi_input.value).toFixed(2)} mi`
+        const miles = readCustomInput('miles', settle)
+        race_dist_m = miles*1609.344
+        race_header_text.textContent = `${miles.toFixed(2)} mi`
     } else if (custom_mode == "kilometers") {
-        race_dist_m = km_input.value*1000
-        race_header_text.textContent = `${Number(km_input.value).toFixed(2)} km`
+        const km = readCustomInput('kilometers', settle)
+        race_dist_m = km*1000
+        race_header_text.textContent = `${km.toFixed(2)} km`
     }
     readCurrentSpeed();
 }
@@ -453,6 +508,15 @@ function setOutputText(button){
 }
 
 
+// The band of speeds the model is defined over. The results table has always
+// fallen back to 🤔 outside it; the "Pace:" reference line uses the same test,
+// so an absurd input (18:00 for 800m) can't print a straight-faced 36:13/mi
+// right above three 🤔.
+const MODEL_MIN_M_S = 2.1
+const MODEL_MAX_M_S = 10
+const speedInModelRange = (m_s) => Number.isFinite(m_s) && m_s >= MODEL_MIN_M_S && m_s <= MODEL_MAX_M_S
+
+
 // ----- Reading speed from digits
 function readCurrentSpeed(){
     // Pace mode
@@ -470,7 +534,7 @@ function readCurrentSpeed(){
     const km_pace = document.querySelector('#pace-per-km')
     const fourhundred_pace = document.querySelector('#pace-per-400')
 
-    if (Number.isFinite(input_m_s) && input_m_s > 0) {
+    if (speedInModelRange(input_m_s)) {
         mi_pace.textContent = convert_dict['/mi'](input_m_s)
         km_pace.textContent = convert_dict['/km'](input_m_s)
         fourhundred_pace.textContent = convert_dict['/400m'](input_m_s)
@@ -609,7 +673,7 @@ function updateOutput(){
   const extrap_text = extrap_div.querySelector('.alert-text')
 
 
-  if (!Number.isFinite(input_m_s) || Number.isNaN(cs_results.cs_minus.q10) || input_m_s < 2.1 || input_m_s > 10){
+  if (!speedInModelRange(input_m_s) || Number.isNaN(cs_results.cs_minus.q10)){
       // If we get any funny business...hmm
       out_text_threshold.textContent = '🤔' // hmm
       out_text_cv.textContent = '🤔' // hmm
