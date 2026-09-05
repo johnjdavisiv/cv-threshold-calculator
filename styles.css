@@ -1554,3 +1554,8 @@ tr:hover {
     left: 3px;
     bottom: 3px;
 }
+
+/* 44px track - 18px knob - 3px inset each side = 20px of travel (the app-wide rule assumes the 54px track) */
+.remember-box input:checked + .slider:before {
+    transform: translateX(20px);
+}
