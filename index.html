@@ -21,6 +21,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="styles.css?v=2.1.0">
     <link rel="stylesheet" href="app-gallery.css?v=22e5443b">
+    <script src="rw-storage.js?v=1.0.0" defer></script>
     <script src="scripts.js?v=2.1.0" defer></script>
     <script src="apps.js?v=22e5443b" defer></script>
     <script src="app-gallery.js?v=22e5443b" defer></script>
@@ -202,6 +203,13 @@
                 <span class="reset-text">Restore defaults</span>
                 <a href="#calculator-settings" class="i-note">?</a>
             </div>
+            <div class="remember-box">
+                <span class="remember-text">Remember settings</span>
+                <label class="switch">
+                    <input type="checkbox" id="remember-toggle" checked>
+                    <span class="slider round"></span>
+                </label>
+            </div>
         <div class="rw-app-gallery" data-current="cv-threshold-calculator"></div>
         <div class="explainer-text">
             <h2 id="how-to-use">How to use<a class="material-icons up" href="#top">arrow_upward</a></h2>
@@ -272,7 +280,7 @@
             <p>The data run from 800m to the 10k, and at each distance they cover a band of times: about 1:35&ndash;4:30 for 800m, 3:18&ndash;8:00 for 1500m, 7:00&ndash;20:00 for 3000m, 12:18&ndash;30:00 for 5k, and 25:00&ndash;60:00 for 10k. Outside that band the calculator still answers, but it tells you that few runners in the dataset ran that fast or that slow, so the paces are extrapolated: the central estimate is extended smoothly from the data, and the width of the range is held at what it was at the edge of the data. <strong>I do not trust the predictions as much for very slow or very fast times.</strong></p>
             <p>Lastly, the data are collegiate, high school, and junior-college track results, so the calculator is still missing data from elite runners and "true" recreational runners. I will continue expanding the dataset to address these limitations in the future.</p>
             <h2 id="calculator-settings">Calculator settings<a class="material-icons up" href="#top">arrow_upward</a></h2>
-            <p>This calculator will remember your race time, race distance, output units, estimate mode, and uncertainty range setting using a cookie, so when you come back later you can pick up where you left off. You can reset everything to the defaults with the <span class="material-icons inline-icon">history</span> button.</p>
+            <p>This calculator will remember your race time, race distance, output units, estimate mode, and uncertainty range setting in your browser's local storage, so when you come back later you can pick up where you left off. You can reset everything to the defaults with the <span class="material-icons inline-icon">history</span> button.</p>
             <h2 id="updates">Updates<a class="material-icons up" href="#top">arrow_upward</a></h2>
             <p><strong>Sep 5, 2026 - v2.0</strong></p>
             <p>New statistical model, fit to over 600,000 race performances (up from about 8,000). One distributional model per pace now describes the whole range of plausible paces, so the uncertainty range can be shown at 80%, 90%, or 95% confidence. The data now reach 30:00 for 5k and 60:00 for 10k, and the calculator says so when a race falls outside them. Same model as in the Running Writings Lab iOS app. The default mode is now the median estimate; the safe estimate is still available with one tap. The calculator now also remembers your settings between visits, with a restore-defaults button.</p>

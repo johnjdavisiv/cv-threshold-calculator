@@ -1407,3 +1407,30 @@ tr:hover {
     padding: clamp(0.55rem, 1.8vw, 1rem) clamp(1rem, 3.5vw, 2rem);
     font-size: clamp(0.7rem, 2.4vw, 1rem);
 }
+
+/* Remember-settings toggle (shared look across RW apps) */
+.remember-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    padding-top: 0.75em;
+    padding-bottom: 0.25em;
+}
+
+.remember-text {
+    font-size: 1.1em;
+    color: var(--gray-out);
+}
+
+.remember-box .switch {
+    width: 44px;
+    height: 24px;
+}
+
+.remember-box .slider:before {
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+}

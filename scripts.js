@@ -658,7 +658,7 @@ function updateOutput(){
     out_text_vo2max_hi.textContent = convert_fxn(cs_results.cs_plus[rq.hi])
   }
 
-  saveStateToCookie()
+  saveState()
 }
 
 
@@ -683,9 +683,10 @@ function lookupTrainingPaces() {
 // variables stay in sync. Restore defaults clears the cookie and replays the
 // defaults.
 
-const STATE_COOKIE_DAYS = 365;
+const APP_ID = 'cv-threshold-calculator';   // localStorage key rw.cv-threshold-calculator.v1 (rw-storage.js)
+let remember_settings = true;
 const BANNER_COOKIE_DAYS = 30;  // hello bar dismissal, shared across all RW apps
-const STATE_COOKIE_NAME = 'cvThresholdCalc';
+const LEGACY_COOKIE_NAME = 'cvThresholdCalc';   // imported once, then deleted
 
 const DEFAULT_STATE = {
     version: 1,
@@ -726,7 +727,7 @@ const activeText = (buttons) => {
     return txt;
 }
 
-function saveStateToCookie() {
+function saveState() {
     const state = {
         version: 1,
         dials: {
@@ -745,18 +746,17 @@ function saveStateToCookie() {
         mode: output_mode,
         range: range_level
     };
-    try {
-        setCookie(STATE_COOKIE_NAME, JSON.stringify(state), STATE_COOKIE_DAYS);
-    } catch (e) {
-        console.warn('Failed to save state to cookie:', e);
-    }
+    RWStorage.save(APP_ID, state, remember_settings);
 }
 
-function loadStateFromCookie() {
-    const raw = getCookie(STATE_COOKIE_NAME);
-    if (!raw) return null;
-    try {
-        const state = JSON.parse(raw);
+function loadSavedState() {
+    // Shared localStorage layer (rw-storage.js). Imports the old cookie once, then deletes it.
+    const saved = RWStorage.load(APP_ID, { legacyCookie: LEGACY_COOKIE_NAME });
+    remember_settings = saved.remember;
+    const remember_toggle_el = document.getElementById('remember-toggle');
+    if (remember_toggle_el) remember_toggle_el.checked = remember_settings;
+    if (!saved.state) return null;    try {
+        const state = saved.state;
         // Version check for future migrations
         if (!state || state.version !== 1) return null;
         // Cookies are user-editable, so check the shape before applyState() trusts it
@@ -830,8 +830,15 @@ function applyState(state) {
 // --- Reset button ---
 const reset_button = document.getElementById('reset-button');
 reset_button.addEventListener('click', () => {
-    clearCookie(STATE_COOKIE_NAME);
+    RWStorage.clear(APP_ID);
     applyState(DEFAULT_STATE);
+});
+
+// --- Remember-settings toggle ---
+const remember_toggle = document.getElementById('remember-toggle');
+remember_toggle.addEventListener('change', () => {
+    remember_settings = remember_toggle.checked;
+    saveState();  // with the flag off this drops the stored state and keeps only the preference
 });
 
 // ---- Initialization ----
@@ -851,8 +858,13 @@ function initializeBanner() {
 
 function initializeCalculator() {
     initializeBanner();
-    const savedState = loadStateFromCookie();
-    applyState(savedState || DEFAULT_STATE);
+    const savedState = loadSavedState();
+    try {
+        applyState(savedState || DEFAULT_STATE);
+    } catch (e) {
+        RWStorage.clear(APP_ID);
+        applyState(DEFAULT_STATE);
+    }
 }
 
 if (document.readyState === 'loading') {
