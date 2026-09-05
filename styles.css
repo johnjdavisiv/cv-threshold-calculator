@@ -1220,3 +1220,190 @@ tr:hover {
 .hidden {
     display: none;
 }
+
+/* Marathon Excellence hello bar */
+
+.mee-banner{
+    width: 100%;
+    min-height: 72px;
+    padding: 8px 16px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+    border-radius: 0;
+}
+
+.banner-left {
+    flex: 0 0 auto;  /* Don't grow, don't shrink, fit content */
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;  /* Stick to left */
+}
+
+.banner-middle {
+    flex: 1;  /* Grow to fill available space */
+    display: flex;
+    align-items: center;
+    justify-content: center;  /* Center the text */
+    padding: 0 40px 0 40px;  /* Add some breathing room */
+}
+
+.banner-right {
+    flex: 0 0 auto;  /* Don't grow, don't shrink, fit content */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;  /* Stick to right */
+}
+
+#mee-banner-close{
+    background: none;
+    padding: 0 5px;
+    color: white;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 0%;
+    cursor: pointer;
+}
+
+#mee-banner-close:hover{
+    color:black;
+}
+
+.hello-bar--aqua-drift {
+    background:
+    linear-gradient(135deg,
+    #66f1ff 0%,
+    #19c4f2 28%,
+    #0a86d8 62%,
+    #0a5cc5 100%);
+}
+
+.cta-button {
+    background: linear-gradient(135deg, #00A8E8, #00C896);
+    color:  #FFFFFF;
+    padding: 0.8rem 1.1rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 4px 15px rgba(0, 168, 232, 0.3);
+    white-space: nowrap;
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 168, 232, 0.4);
+}
+
+.hello-link{
+    text-decoration: none;
+    font-style:italic;
+    color:white;
+}
+
+.hello-link:hover{
+    color:#f472b6;
+}
+
+/* Mobile swap */
+.banner-text-full {
+    display: inline;
+}
+
+.banner-text-short {
+    display: none;
+}
+
+/* On mobile, swap them */
+@media (max-width: 768px) {
+    .banner-text-full {
+        display: none;
+    }
+
+    .banner-text-short {
+        display: inline;
+    }
+
+    .banner-middle {
+        padding: 0 15px;  /* Tighter padding on mobile */
+    }
+
+    .mee-banner {
+        padding: 8px 8px;  /* Tighter overall padding */
+    }
+}
+
+/* On phones, compact single row: shorter copy, smaller x/text/pill,
+   but keep near-desktop vertical breathing room around the pill */
+@media (max-width: 600px) {
+    .mee-banner {
+        min-height: 64px;
+        padding: 8px 8px;
+    }
+
+    .banner-middle {
+        padding: 0 6px;
+    }
+
+    .banner-text-short {
+        /* shrink with the viewport so the message always stays on one line
+           (coefficient tuned empirically against measured text width) */
+        font-size: clamp(0.58em, 2.9vw, 0.85em);
+        white-space: nowrap;
+    }
+
+    #mee-banner-close {
+        font-size: 1.2rem;
+        padding: 0 4px;
+    }
+
+    .cta-button {
+        padding: 0.6rem 0.9rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Global utilities */
+
+.invis{
+    color:white;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Marathon Excellence book CTA module (shared across RW apps) */
+.book-cta-module {
+    position: relative;
+    margin: 1.5em 0;
+}
+
+.book-cta-module img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+.book-cta-module .cta-box {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 4%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Scale with the viewport so the button stays inside the empty
+   strip along the bottom of the banner image at any screen width */
+.book-cta-module .cta-button {
+    padding: clamp(0.55rem, 1.8vw, 1rem) clamp(1rem, 3.5vw, 2rem);
+    font-size: clamp(0.7rem, 2.4vw, 1rem);
+}

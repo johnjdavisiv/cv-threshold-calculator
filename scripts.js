@@ -684,6 +684,7 @@ function lookupTrainingPaces() {
 // defaults.
 
 const STATE_COOKIE_DAYS = 365;
+const BANNER_COOKIE_DAYS = 30;  // hello bar dismissal, shared across all RW apps
 const STATE_COOKIE_NAME = 'cvThresholdCalc';
 
 const DEFAULT_STATE = {
@@ -834,7 +835,22 @@ reset_button.addEventListener('click', () => {
 });
 
 // ---- Initialization ----
+function initializeBanner() {
+    // Hello bar (separate cookie, shared across RW apps - don't be annoying)
+    const banner = document.querySelector('.mee-banner');
+    const closeButton = document.getElementById('mee-banner-close');
+    if (!banner || !closeButton) return;
+    if (getCookie('meeBannerClosed') !== 'true') {
+        banner.classList.remove('hidden');
+    }
+    closeButton.addEventListener('click', function() {
+        banner.classList.add('hidden');
+        setCookie('meeBannerClosed', 'true', BANNER_COOKIE_DAYS);
+    });
+}
+
 function initializeCalculator() {
+    initializeBanner();
     const savedState = loadStateFromCookie();
     applyState(savedState || DEFAULT_STATE);
 }
