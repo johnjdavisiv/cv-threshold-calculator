@@ -28,7 +28,7 @@ const script = fs.readFileSync(path.join(root, 'scripts.js'), 'utf8');
 const goldens = JSON.parse(fs.readFileSync(path.join(root, 'cv_goldens_v2026-09-05.json'), 'utf8'));
 const pieces = JSON.parse(fs.readFileSync(path.join(root, 'cv_pieces_v2026-09-05.json'), 'utf8'));
 
-const ACCESSOR = `\nwindow.__m = { cvPieces, predictParams, quantileSpeed, hullStatus, hullBounds, Z, get race_dist_m() { return race_dist_m }, get dec_seconds() { return dec_seconds }, get range_level() { return range_level } };`;
+const ACCESSOR = `\nwindow.__m = { cvPieces, predictParams, quantileSpeed, hullStatus, hullBounds, Z, get race_dist_m() { return race_dist_m }, get dec_seconds() { return dec_seconds }, get range_level() { return range_level }, applyState, loadStateFromCookie, DEFAULT_STATE, STATE_COOKIE_NAME };`;
 const dom = new JSDOM(html, { runScripts: 'outside-only', url: 'http://localhost/', virtualConsole: new VirtualConsole() });
 const w = dom.window;
 const doc = w.document;
@@ -80,15 +80,16 @@ const paces = () => [$('#threshold-pace').textContent, $('#cv-pace').textContent
 const ranges = () => [$('#threshold-lo').textContent, $('#threshold-hi').textContent, $('#cv-lo').textContent, $('#cv-hi').textContent, $('#vo2max-lo').textContent, $('#vo2max-hi').textContent];
 const hidden = (sel) => $(sel).classList.contains('hidden');
 
-// defaults: 18:00 5k, safe, /mi — same numbers as the iOS port's tests
-setTime(18, 0);
-assert.deepEqual(paces(), ['6:25', '6:02', '5:44']);
+// defaults: 18:00 5k, median (the default since v2.1), /mi — same numbers as the iOS port's tests
+// (the page runs this itself at load; jsdom fires DOMContentLoaded after this synchronous script, so call it here)
+m.applyState(m.DEFAULT_STATE);
+assert.ok($('.mode-toggle.active').textContent === 'Median estimate', 'median estimate is the default');
+assert.deepEqual(paces(), ['6:12', '6:02', '5:52']);
 assert.deepEqual(ranges(), ['6:03', '6:25', '5:58', '6:08', '5:44', '6:00']);
 assert.equal($('.range-header.uncertainty-col').textContent, '80% range');
 assert.ok(hidden('.alert-box') && hidden('.extrapolation-box'));
-byText('.mode-toggle', 'Median estimate').click();
-assert.deepEqual(paces(), ['6:12', '6:02', '5:52']);
 byText('.mode-toggle', 'Safe estimate').click();
+assert.deepEqual(paces(), ['6:25', '6:02', '5:44']);
 
 // range chips
 byText('.range-toggle', '90%').click();
@@ -143,4 +144,50 @@ assert.notEqual(paces()[0], '🤔');
 setTime(1, 19);
 assert.equal(paces()[0], '🤔');
 
-console.log('ui: defaults, mode, range chips, extrapolation banner variants, speed guard — all as expected');
+// persistence: every recompute writes the cookie; a fresh load replays it; Restore defaults clears it
+byText('.race-button', 'custom distance').click();
+byText('.custom-toggle', 'miles').click();
+$('#custom-mi').value = '2.5';
+$('#custom-mi').dispatchEvent(new w.Event('input', { bubbles: true }));
+byText('.output-toggle', '/km').click();
+byText('.mode-toggle', 'Safe estimate').click();
+byText('.range-toggle', '95%').click();
+setTime(13, 45);
+const savedPaces = paces();
+const savedRanges = ranges();
+// (JSON round-trip: the page parses the cookie in its own realm, whose Object prototype is not ours)
+const plain = (o) => JSON.parse(JSON.stringify(o));
+const saved = plain(m.loadStateFromCookie());
+assert.ok(doc.cookie.includes(m.STATE_COOKIE_NAME + '='), 'cookie written');
+assert.deepEqual(saved, {
+  version: 1, dials: { d1: 13, d2: 4, d3: 5 }, race: 'custom distance', custom: { mode: 'miles', m: 600, mi: 2.5, km: 12 }, // 600 m + 12 km were typed above
+  output_unit: '/km', mode: 'safe', range: 95,
+});
+m.applyState(m.DEFAULT_STATE);
+assert.deepEqual(paces(), ['6:12', '6:02', '5:52']);
+assert.equal($('#race-dist-text').textContent, '5 km');
+m.applyState(saved);
+assert.deepEqual(paces(), savedPaces, 'replaying the cookie restores the paces');
+assert.deepEqual(ranges(), savedRanges);
+assert.equal($('#race-dist-text').textContent, '2.50 mi');
+assert.equal($('.mode-toggle.active').textContent, 'Safe estimate');
+assert.equal($('.range-header.uncertainty-col').textContent, '95% range');
+assert.ok($('#advanced-content').classList.contains('expanded') && !hidden('#miles-input-div'), 'custom box open on miles');
+// hand-edited junk falls back to the defaults field by field
+m.applyState({ version: 1, dials: { d1: 250, d2: -1, d3: 'x' }, race: 'marathon', custom: { mode: 'furlongs', m: -5 }, output_unit: '/furlong', mode: 'safe', range: 42 });
+assert.deepEqual([$('#d1').textContent, $('#d2').textContent, $('#d3').textContent], ['99', '0', '0']);
+assert.equal($('#race-dist-text').textContent, '5 km');
+assert.equal($('.output-toggle.active').textContent, '/mi');
+assert.equal($('.mode-toggle.active').textContent, 'Safe estimate');
+assert.equal(m.range_level, 80);
+assert.equal($('#custom-m').value, '5000');
+// Restore defaults
+$('#reset-button').click();
+assert.deepEqual([$('#d1').textContent, $('#d2').textContent, $('#d3').textContent], ['18', '0', '0']);
+assert.deepEqual(paces(), ['6:12', '6:02', '5:52']);
+assert.equal($('.mode-toggle.active').textContent, 'Median estimate');
+assert.equal($('.race-button.active').textContent, '5 km');
+assert.ok(!$('#advanced-content').classList.contains('expanded'));
+assert.deepEqual(plain(m.loadStateFromCookie()), plain(m.DEFAULT_STATE), 'cookie holds the defaults after reset');
+
+console.log('ui: defaults, mode, range chips, extrapolation banner variants, speed guard, cookie + restore defaults — all as expected');

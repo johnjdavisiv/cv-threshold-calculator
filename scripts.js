@@ -135,7 +135,7 @@ let input_m_s = RUNNER_SPEED_DEFAULT // or can just read from pace dials...
 
 let race_dist_m = 5000
 
-let output_mode = "safe"
+let output_mode = "median" // "median" (default since v2.1) or "safe"
 
 // Uncertainty range chips: 80, 90, 95 or 'off' (the ends are still computed at 80 while off, just hidden)
 let range_level = 80
@@ -658,6 +658,7 @@ function updateOutput(){
     out_text_vo2max_hi.textContent = convert_fxn(cs_results.cs_plus[rq.hi])
   }
 
+  saveStateToCookie()
 }
 
 
@@ -670,4 +671,176 @@ function lookupTrainingPaces() {
         for (const q of Q_KEYS) cs_results[o][q] = quantileSpeed(p, q)
     }
     return cs_results;
+}
+
+
+// ============================================================
+// STATE PERSISTENCE (cookie) + RESTORE DEFAULTS
+// ============================================================
+// Same pattern as the LT1 / race-pace calculators: every recompute writes the
+// current inputs to a one-year cookie; on load the cookie is validated and
+// replayed through the normal button setters, so the UI and the state
+// variables stay in sync. Restore defaults clears the cookie and replays the
+// defaults.
+
+const STATE_COOKIE_DAYS = 365;
+const STATE_COOKIE_NAME = 'cvThresholdCalc';
+
+const DEFAULT_STATE = {
+    version: 1,
+    dials: { d1: 18, d2: 0, d3: 0 },
+    race: '5 km',
+    custom: { mode: 'meters', m: 5000, mi: 3.1, km: 5.0 },
+    output_unit: '/mi',
+    mode: 'median',
+    range: 80
+};
+
+function setCookie(name, value, days) {
+    const date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + date.toUTCString();
+    document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/;SameSite=Lax";
+}
+
+function getCookie(name) {
+    const nameEQ = name + "=";
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        let c = cookies[i].trim();
+        if (c.indexOf(nameEQ) === 0) {
+            return decodeURIComponent(c.substring(nameEQ.length, c.length));
+        }
+    }
+    return null;
+}
+
+function clearCookie(name) {
+    document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;SameSite=Lax";
+}
+
+const activeText = (buttons) => {
+    let txt = null;
+    buttons.forEach(btn => { if (btn.classList.contains('active')) txt = btn.textContent.trim(); });
+    return txt;
+}
+
+function saveStateToCookie() {
+    const state = {
+        version: 1,
+        dials: {
+            d1: parseInt(d1.textContent) || 0,
+            d2: parseInt(d2.textContent) || 0,
+            d3: parseInt(d3.textContent) || 0
+        },
+        race: activeText(race_buttons) || DEFAULT_STATE.race,
+        custom: {
+            mode: custom_mode,
+            m: parseFloat(m_input.value) || DEFAULT_STATE.custom.m,
+            mi: parseFloat(mi_input.value) || DEFAULT_STATE.custom.mi,
+            km: parseFloat(km_input.value) || DEFAULT_STATE.custom.km
+        },
+        output_unit: output_units,
+        mode: output_mode,
+        range: range_level
+    };
+    try {
+        setCookie(STATE_COOKIE_NAME, JSON.stringify(state), STATE_COOKIE_DAYS);
+    } catch (e) {
+        console.warn('Failed to save state to cookie:', e);
+    }
+}
+
+function loadStateFromCookie() {
+    const raw = getCookie(STATE_COOKIE_NAME);
+    if (!raw) return null;
+    try {
+        const state = JSON.parse(raw);
+        // Version check for future migrations
+        if (!state || state.version !== 1) return null;
+        // Cookies are user-editable, so check the shape before applyState() trusts it
+        if (!state.dials || typeof state.dials !== 'object') return null;
+        if (!state.custom || typeof state.custom !== 'object') return null;
+        return state;
+    } catch (e) {
+        return null;
+    }
+}
+
+// Activate the button in a group whose label matches `text`, routing through the
+// group's setter so dependent labels stay in sync. Returns false if no match.
+function activateButtonByText(buttons, text, setter) {
+    let matched = null;
+    buttons.forEach(btn => { if (btn.textContent.trim() === text) matched = btn; });
+    if (!matched) return false;
+    buttons.forEach(btn => btn.classList.remove('active'));
+    matched.classList.add('active');
+    setter(matched);
+    return true;
+}
+
+const clampInt = (x, lo, hi, fallback) => {
+    const v = parseInt(x);
+    return Number.isFinite(v) ? Math.min(Math.max(v, lo), hi) : fallback;
+}
+
+const positiveOr = (x, fallback) => {
+    const v = parseFloat(x);
+    return Number.isFinite(v) && v > 0 ? v : fallback;
+}
+
+function applyState(state) {
+    const d = DEFAULT_STATE;
+
+    // 1. Dials, clamped to valid ranges in case of a stale or hand-edited cookie
+    d1.textContent = clampInt(state.dials.d1, 0, 99, d.dials.d1);
+    d2.textContent = clampInt(state.dials.d2, 0, 5, d.dials.d2);
+    d3.textContent = clampInt(state.dials.d3, 0, 9, d.dials.d3);
+
+    // 2. Custom distance inputs + unit (before the race, which may read them)
+    m_input.value = positiveOr(state.custom.m, d.custom.m);
+    mi_input.value = positiveOr(state.custom.mi, d.custom.mi);
+    km_input.value = positiveOr(state.custom.km, d.custom.km);
+    if (!activateButtonByText(custom_units, state.custom.mode, revealCustomBox)) {
+        activateButtonByText(custom_units, d.custom.mode, revealCustomBox);
+    }
+
+    // 3. Race distance (sets the header text and expands the custom box if needed)
+    const pickRace = (btn) => { race_header_text.textContent = btn.textContent; setRaceDistance(btn); };
+    if (!activateButtonByText(race_buttons, state.race, pickRace)) {
+        activateButtonByText(race_buttons, d.race, pickRace);
+    }
+
+    // 4. Output unit, estimate mode, uncertainty range (fall back to defaults on no match)
+    if (!activateButtonByText(output_buttons, state.output_unit, setOutputText)) {
+        activateButtonByText(output_buttons, d.output_unit, setOutputText);
+    }
+    const mode_text = state.mode === 'safe' ? 'Safe estimate' : 'Median estimate';
+    activateButtonByText(mode_buttons, mode_text, setMode);
+    const range_text = state.range === 'off' ? 'Off' : `${state.range}%`;
+    if (!activateButtonByText(range_buttons, range_text, setRangeLevel)) {
+        activateButtonByText(range_buttons, `${d.range}%`, setRangeLevel);
+    }
+
+    // 5. Recompute (this also re-saves)
+    updateResult();
+}
+
+// --- Reset button ---
+const reset_button = document.getElementById('reset-button');
+reset_button.addEventListener('click', () => {
+    clearCookie(STATE_COOKIE_NAME);
+    applyState(DEFAULT_STATE);
+});
+
+// ---- Initialization ----
+function initializeCalculator() {
+    const savedState = loadStateFromCookie();
+    applyState(savedState || DEFAULT_STATE);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeCalculator);
+} else {
+    initializeCalculator();
 }

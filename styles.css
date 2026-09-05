@@ -14,6 +14,7 @@
     --slider-width: 54px;
     --slider-height: 30px;
     --uncertainty-color: #64748b;
+    --gray-out: #6b7280;
 
     --scale-factor: 0.9;
 }
@@ -642,6 +643,37 @@ main {
     display:flex;
     align-items: center;
     gap: 0.5em;
+}
+
+/* Restore defaults (same as the other RW apps) */
+
+.reset-box{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    padding-top: 1em;
+}
+
+.reset-text{
+    font-size: 1.1em;
+    color: var(--gray-out);
+}
+
+.reset-box button{
+    color: var(--gray-out);
+}
+
+.flip-button {
+    border:none;
+    font-size:2em;
+    background: none;
+    transition: transform 0.4s;
+    transform-origin: center;
+}
+
+.material-icons.inline-icon {
+    font-size: 1em;
 }
 
 .alert-inner {
