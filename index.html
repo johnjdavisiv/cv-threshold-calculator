@@ -16,9 +16,8 @@
     <meta name="author" content="John J Davis, PhD">
     <title>Threshold, CV pace, and VO2max pace calculator for runners - from Running Writings</title>
     <link rel="icon" href="https://apps.runningwritings.com/cv-threshold-calculator/images/RW-favicon.png" type="image/png">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="preload" href="fonts/roboto-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/pt-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" type="text/css" href="styles.css?v=2.1.0">
     <link rel="stylesheet" href="app-gallery.css?v=22e5443b">
     <script src="rw-storage.js?v=1.0.0" defer></script>
@@ -55,22 +54,22 @@
                 <div class="left-dummy"></div>
                 <div class="clock" id="pace-dials">
                     <div class="digitbox">
-                        <button class="material-icons svg-arrow" id="d1-up">expand_less</button>
+                        <button class="material-icons svg-arrow" id="d1-up"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m296-345-56-56 240-240 240 240-56 56-184-184-184 184Z"/></svg></button>
                         <div class="digit" id="d1">18</div>
-                        <button class="material-icons svg-arrow" id="d1-down">expand_more</button>
+                        <button class="material-icons svg-arrow" id="d1-down"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M480-345 240-585l56-56 184 184 184-184 56 56-240 240Z"/></svg></button>
                     </div>
                     <div class="digitbox colon">
                         <span class="digit">:</span>
                     </div>
                     <div class="digitbox">
-                        <button class="material-icons svg-arrow" id="d2-up">expand_less</button>
+                        <button class="material-icons svg-arrow" id="d2-up"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m296-345-56-56 240-240 240 240-56 56-184-184-184 184Z"/></svg></button>
                         <div class="digit" id="d2">0</div>
-                        <button class="material-icons svg-arrow" id="d2-down">expand_more</button>
+                        <button class="material-icons svg-arrow" id="d2-down"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M480-345 240-585l56-56 184 184 184-184 56 56-240 240Z"/></svg></button>
                     </div>
                     <div class="digitbox">
-                        <button class="material-icons svg-arrow" id="d3-up">expand_less</button>
+                        <button class="material-icons svg-arrow" id="d3-up"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="m296-345-56-56 240-240 240 240-56 56-184-184-184 184Z"/></svg></button>
                         <div class="digit" id="d3">0</div>
-                        <button class="material-icons svg-arrow" id="d3-down">expand_more</button>
+                        <button class="material-icons svg-arrow" id="d3-down"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M480-345 240-585l56-56 184 184 184-184 56 56-240 240Z"/></svg></button>
                     </div>
                     <!-- <div class="unit-text" id="pace-units">5 km</div> -->
                 </div>
@@ -199,7 +198,7 @@
                 <button class="unit-toggle range-toggle">Off</button>
             </div>
             <div class="reset-box">
-                <button class="material-icons flip-button" title="Restore defaults" id="reset-button">history</button>
+                <button class="material-icons flip-button" title="Restore defaults" id="reset-button"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/></svg></button>
                 <span class="reset-text">Restore defaults</span>
                 <a href="#calculator-settings" class="i-note">?</a>
             </div>
@@ -212,14 +211,14 @@
             </div>
         <div class="rw-app-gallery" data-current="cv-threshold-calculator"></div>
         <div class="explainer-text">
-            <h2 id="how-to-use">How to use<a class="material-icons up" href="#top">arrow_upward</a></h2>
+            <h2 id="how-to-use">How to use<a class="material-icons up" href="#top"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg></a></h2>
             <p>This app calculates your threshold pace, CV pace, and VO2max pace given a recent race performance. For runners doing physiologically-based training, these paces can be used to produce specific, distinct patterns of physiological response from the body.</p>
             <p>When you run at <strong>threshold pace</strong> (a.k.a. “LT2 pace” or “T pace”), you are running at the <em>fastest</em> speed that creates a <a href="https://runningwritings.com/2024/08/steady-state-max-for-runners.html">metabolic steady-state</a> over time. At this pace, variables like blood lactate, heart rate, and oxygen consumption (VO2) will be stable over time. </p>
             <p>When you run at <strong>CV pace</strong> (a.k.a. “critical velocity” or “critical speed”), you are running exactly at the boundary separating metabolically sustainable and metabolically unsustainable paces. Different physiological variables will tilt towards or away from stability in an unpredictable fashion.</p>
             <p>When you run at <strong>VO2max pace</strong> (a.k.a. “vVO2max”) you are running at the <em>slowest</em> speed that creates a metabolically unsustainable state over time. At this pace, variables like blood lactate, heart rate, and VO2 will rise inexorably towards their maximum tolerable limit (HRmax and VO2max, in the case of heart rate and VO2).</p>
             <p>Many modern training systems, particularly American, British, and Norwegian-style training, are focused around workouts that produce these three distinct patterns of physiological response. Athletes and coaches associated with these physiologically-based approaches include Jack Daniels, Tom “Tinman” Schwartz, Peter and Sebastian Coe, Marius Bakken, and Jakob Ingebrigtsen.</p>
             <p>To calculate your training paces, enter your race time (in min:sec) and race distance using the input dials. The calculator supports race distances from 800m to the 10k, or a custom distance. For the time being, you can convert your HM or marathon time to a 10k time and use that instead.</p>
-            <h2 id="how-it-works">How this calculator works<a class="material-icons up" href="#top">arrow_upward</a></h2>
+            <h2 id="how-it-works">How this calculator works<a class="material-icons up" href="#top"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg></a></h2>
             <p>This calculator is based on the <a href="https://runningwritings.com/2024/01/critical-speed-guide-for-runners.html">critical speed model</a>, which is the gold standard in physiology for determining metabolically sustainable and metabolically unsustainable paces. </p>
             <p>The predictions from this calculator are unique in that they explicitly account for uncertainty in your threshold, CV, and VO2max paces.</p>
             <p>Because runners differ in their aerobic versus anaerobic orientation—sometimes called being a “fast-twitch” versus a “slow-twitch” runner—two runners at the same performance level can have different values for threshold, CV, and VO2max. </p>
@@ -227,7 +226,7 @@
             <p>The predictions from this calculator were developed from data on over 600,000 race performances from more than 100,000 high school, junior-college, and college runners competing across 186,000 seasons. The dataset includes distances from 800m to the 10k. </p>
             <p>All of these runners competed at three or more different distances in events lasting up to 25 minutes during the same season, which enables applying the critical speed model to calculate CS, CS+, and CS-, which are the gold-standard estimates for CV, VO2max, and threshold pace, respectively. These estimates come out of considering the possible variation in the true value of a runner's critical speed, given their race performances.</p>
             <img src="images/Simulate threshold uncertainty for running.png">
-            <h2 id="uncertainty-estimates">Safe estimates, median estimates, and uncertainty ranges<a class="material-icons up" href="#top">arrow_upward</a></h2>
+            <h2 id="uncertainty-estimates">Safe estimates, median estimates, and uncertainty ranges<a class="material-icons up" href="#top"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg></a></h2>
             <p>By default, this calculator shows the <strong>median estimate</strong> of each pace: the 50th percentile, which is what a traditional calculator would give you. It can also show a “safe estimate” of threshold pace, which is a pace that will produce a metabolic steady-state for 90% of runners.</p>
             <p>The same approach is used for VO2max pace: the safe estimate is a pace that will produce a metabolically unsustainable state for 90% of runners.</p>
             <p>Why offer a <strong>safe estimate</strong> at all?</p>
@@ -239,7 +238,7 @@
             <p>Since CV pace is intentionally trying to be right at the 50th percentile, straddling metabolic stability and instability, the calculator returns the 50th percentile for CV pace in both modes.</p>
             <p>If you want to see the range of plausible paces for threshold, CV, and VO2max pace, use the <strong>uncertainty range</strong> buttons: <strong>80%</strong> shows the 10th to 90th percentiles, <strong>90%</strong> the 5th to 95th, and <strong>95%</strong> the 2.5th to 97.5th, always from the faster end to the slower end. The safe estimate always uses the 10th and 90th percentiles, whichever range you show. The 80% range corresponds to this range of paces: </p>
             <img src="images/Threshold pace uncertainty - full range.png">
-            <h2>Threshold, CV, and VO2max pace FAQs<a class="material-icons up" href="#top">arrow_upward</a></h2>
+            <h2>Threshold, CV, and VO2max pace FAQs<a class="material-icons up" href="#top"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg></a></h2>
             <h3 id="why-is-my-predicted-vo2max-pace-slower-than-other-calculators-">Why is my predicted VO2max pace slower than other calculators?</h3>
             <p>Historically, “VO2max pace” or “vVO2max” (velocity at VO2max) was taken to be the final speed you would reach in a lab-based progressive treadmill test to determine VO2max.</p>
             <p>As an example, you might start on a treadmill at 10 km/hr, with the speed increasing 1 km/hr every 2 minutes and continuing until exhaustion or until your VO2 hits a plateau. </p>
@@ -272,23 +271,23 @@
             <p>On a technical level, the predictive model is a sinh-arcsinh distributional regression model fit with <a href="https://cran.r-project.org/web/packages/mgcv/index.html">mgcv</a>: from one race per season it learns the whole distribution of threshold, CV, and VO2max paces that is compatible with a single performance—its center, its spread, and its skew—and the calculator reads any percentile off that distribution directly.</p>
             <h3 id="can-i-see-the-raw-data-you-used-to-develop-this-model-">Can I see the raw data you used to develop this model?</h3>
             <p>The dataset and analysis code behind the original (v1) model are <a href="https://github.com/johnjdavisiv/cv-threshold-calculator/tree/main/analysis">here on GitHub</a>, along with the <a href="https://github.com/johnjdavisiv/cv-threshold-calculator">source code</a> for the app itself, including the fitted v2.0 model the app evaluates.</p>
-            <h2 id="limitations">Limitations and caveats<a class="material-icons up" href="#top">arrow_upward</a></h2>
+            <h2 id="limitations">Limitations and caveats<a class="material-icons up" href="#top"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg></a></h2>
             <p>The critical speed model is very powerful, and is regarded as the gold standard for estimating steady-state max. Even so, this calculator has a few limitations you should keep in mind.</p>
             <p>The first is the fact that everyone in this dataset competed at <strong>three different distances</strong> from 800m to 5k during the same season (indoor or outdoor track).</p>
             <p>In many cases, "true" middle-distance runners may only race at 400m&ndash;1000m indoors, and 400m & 800m outdoors.</p>
             <p> These runners are not in the data used to develop this calculator, and as a result, there may be some selection bias: <strong>predictions will be "too aerobic" for some middle distance runners</strong>. Pay close attention to the broad uncertainty range for middle-distance events.</p>
             <p>The data run from 800m to the 10k, and at each distance they cover a band of times: about 1:35&ndash;4:30 for 800m, 3:18&ndash;8:00 for 1500m, 7:00&ndash;20:00 for 3000m, 12:18&ndash;30:00 for 5k, and 25:00&ndash;60:00 for 10k. Outside that band the calculator still answers, but it tells you that few runners in the dataset ran that fast or that slow, so the paces are extrapolated: the central estimate is extended smoothly from the data, and the width of the range is held at what it was at the edge of the data. <strong>I do not trust the predictions as much for very slow or very fast times.</strong></p>
             <p>Lastly, the data are collegiate, high school, and junior-college track results, so the calculator is still missing data from elite runners and "true" recreational runners. I will continue expanding the dataset to address these limitations in the future.</p>
-            <h2 id="calculator-settings">Calculator settings<a class="material-icons up" href="#top">arrow_upward</a></h2>
-            <p>This calculator will remember your race time, race distance, output units, estimate mode, and uncertainty range setting in your browser's local storage, so when you come back later you can pick up where you left off. You can reset everything to the defaults with the <span class="material-icons inline-icon">history</span> button.</p>
-            <h2 id="updates">Updates<a class="material-icons up" href="#top">arrow_upward</a></h2>
+            <h2 id="calculator-settings">Calculator settings<a class="material-icons up" href="#top"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg></a></h2>
+            <p>This calculator will remember your race time, race distance, output units, estimate mode, and uncertainty range setting in your browser's local storage, so when you come back later you can pick up where you left off. You can reset everything to the defaults with the <span class="material-icons inline-icon"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/></svg></span> button.</p>
+            <h2 id="updates">Updates<a class="material-icons up" href="#top"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg></a></h2>
             <p><strong>Sep 5, 2026 - v2.0</strong></p>
             <p>New statistical model, fit to over 600,000 race performances (up from about 8,000). One distributional model per pace now describes the whole range of plausible paces, so the uncertainty range can be shown at 80%, 90%, or 95% confidence. The data now reach 30:00 for 5k and 60:00 for 10k, and the calculator says so when a race falls outside them. Same model as in the Running Writings Lab iOS app. The default mode is now the median estimate; the safe estimate is still available with one tap. The calculator now also remembers your settings between visits, with a restore-defaults button.</p>
             <p><strong>Feb 2, 2025 - v1.1</strong></p>
             <p>Updated with new data from master's runners and adult runners. Cleaned out some improbable race performances from the dataset. Fixed a bug where 8k and 10k times were giving estimated paces that were too slow. Now uses a much better statistical model that improves accuracy for performances slower than ~20:00 for 5k or equivalent.</p>
             <p><strong>Jan 16, 2025 - v1.0</strong></p>
             <p>Initial release! 🎉</p>
-            <h2 id="get-updates">Support my work<a class="material-icons up" href="#top">arrow_upward</a></h2>
+            <h2 id="get-updates">Support my work<a class="material-icons up" href="#top"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg></a></h2>
             <p>If you want to find out when I have new apps and research coming out, sign up for my email list below! It's the best way to follow my work.</p>
             <p>If you're training for the marathon, be sure to check out my new book, <strong><a href="https://amzn.to/43mIH2B" class="plausible-event-name=Body+Book+Click">Marathon Excellence for Everyone</a></strong>. It covers the modern approach to marathon training, including training plans, racing strategies, and the latest science on training.</p>
             <p>If you live outside of the United States, there is also a <strong><a href="https://amzn.to/3LzimIB" class="plausible-event-name=Body+Book+Click">Metric Edition of Marathon Excellence</a></strong> available, with all workouts and paces in kilometers!</p>
@@ -303,14 +302,14 @@
             <div class="newsletter-block">
                 <script async src="https://eomail6.com/form/187bb3d4-92e9-11ed-8dcb-9536633250ee.js" data-form="187bb3d4-92e9-11ed-8dcb-9536633250ee"></script>
             </div>
-            <h2 id="contact">Contact<a class="material-icons up" href="#top">arrow_upward</a></h2>
+            <h2 id="contact">Contact<a class="material-icons up" href="#top"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg></a></h2>
             <p>If you've got feedback on this web app, or if you've found a bug, please reach out! You can reach me at <a href="mailto:john@runningwritings.com"><strong>john@runningwritings.com</strong></a>.</p>
             <p>I'm <a href="https://x.com/JDruns"><strong>also on X</strong></a>, but the best way to follow my work is my <a href="https://runningwritings.eo.page/news-and-notes-signup"><strong>email list</strong></a>!</p>
         </div>
     </main>
     <footer>
         Made by <a class="author-link" href="https://runningwritings.com">John Davis</a>
-        <a href="https://github.com/johnjdavisiv/cv-threshold-calculator" target="_blank"><i class="fa fa-github github-icon"></i></a>
+        <a href="https://github.com/johnjdavisiv/cv-threshold-calculator" target="_blank"><svg class="github-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
     </footer>
 </body>
 </html>
