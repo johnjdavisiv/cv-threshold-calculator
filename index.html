@@ -19,9 +19,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="styles.css?v=1.1.0">
+    <link rel="stylesheet" type="text/css" href="styles.css?v=2.0.0">
     <link rel="stylesheet" href="app-gallery.css?v=22e5443b">
-    <script src="scripts.js?v=1.1.0" defer></script>
+    <script src="scripts.js?v=2.0.0" defer></script>
     <script src="apps.js?v=22e5443b" defer></script>
     <script src="app-gallery.js?v=22e5443b" defer></script>
     <script defer data-domain="apps.runningwritings.com" src="https://plausible.io/js/script.js"></script>
@@ -40,7 +40,7 @@
     </header>
     <main>
         <h1>Threshold, CV, and VO2max pace calculator</h1>
-        <div class="announce-text">🚀&nbsp;<span class="ann-bold">New & Improved!</span>&nbsp;<a href="#updates">See v1.1 updates</a></div>
+        <div class="announce-text">🚀&nbsp;<span class="ann-bold">New model!</span>&nbsp;<a href="#updates">See v2.0 updates</a></div>
         <div class="app-box">
             <div class="pace-box">
                 <div class="left-dummy"></div>
@@ -130,14 +130,14 @@
                     <tr>
                         <td></td>
                         <td><span class="range-header">&nbsp;</span></td>
-                        <td><span class="range-header uncertainty-col">90% Range</span></td>
+                        <td><span class="range-header uncertainty-col">80% range</span></td>
                     <tr>
                         <td>Threshold</td>
-                        <td><span class="output-pace" id="threshold-pace">6:23</span><span class="result-units">/mi</span></td>
+                        <td><span class="output-pace" id="threshold-pace">6:25</span><span class="result-units">/mi</span></td>
                         <td class="uncertainty-col">
                             <span class="output-range" id="threshold-lo">6:03</span>
                             <span class="output-range output-dash">&ndash;</span>
-                            <span class="output-range" id="threshold-hi">6:23</span>
+                            <span class="output-range" id="threshold-hi">6:25</span>
                         </td>
                     </tr>
                     <tr>
@@ -146,7 +146,7 @@
                       <td class="uncertainty-col">
                         <span class="output-range" id="cv-lo">5:58</span>
                         <span class="output-range output-dash">&ndash;</span>
-                        <span class="output-range" id="cv-hi">6:07</span>
+                        <span class="output-range" id="cv-hi">6:08</span>
                     </td>
                     </tr>
                     <tr>
@@ -167,7 +167,7 @@
             </div>
             <div class="extrapolation-box hidden">
                 <div class="extrapolation-inner">
-                    <span class='alert-text'>⚠️ Outside the model's data (800 m – 12 km, 1:30 – 80:00) — these paces are extrapolated</span>
+                    <span class='alert-text'>⚠️ Few runners in our dataset ran this fast or this slow, so these paces are extrapolated.</span>
                 </div>
             </div>
             <div class="unit-stack-horiz">
@@ -182,13 +182,12 @@
                 <button class="unit-toggle mode-toggle">Median estimate</button>
                 <a href="#uncertainty-estimates" class="i-note">?</a>
             </div>
-            <div class="uncertainty-toggle-div">
+            <div class="uncertainty-toggle-div unit-stack-horiz">
                 <span class="uncertainty-pre">Uncertainty range:</span>
-                <span class="uncertainty-text active-uncertainty-text" id="off-on-text">On</span>
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider round"></span>
-                </label>
+                <button class="unit-toggle range-toggle active">80%</button>
+                <button class="unit-toggle range-toggle">90%</button>
+                <button class="unit-toggle range-toggle">95%</button>
+                <button class="unit-toggle range-toggle">Off</button>
             </div>
         <div class="rw-app-gallery" data-current="cv-threshold-calculator"></div>
         <div class="explainer-text">
@@ -198,14 +197,14 @@
             <p>When you run at <strong>CV pace</strong> (a.k.a. “critical velocity” or “critical speed”), you are running exactly at the boundary separating metabolically sustainable and metabolically unsustainable paces. Different physiological variables will tilt towards or away from stability in an unpredictable fashion.</p>
             <p>When you run at <strong>VO2max pace</strong> (a.k.a. “vVO2max”) you are running at the <em>slowest</em> speed that creates a metabolically unsustainable state over time. At this pace, variables like blood lactate, heart rate, and VO2 will rise inexorably towards their maximum tolerable limit (HRmax and VO2max, in the case of heart rate and VO2).</p>
             <p>Many modern training systems, particularly American, British, and Norwegian-style training, are focused around workouts that produce these three distinct patterns of physiological response. Athletes and coaches associated with these physiologically-based approaches include Jack Daniels, Tom “Tinman” Schwartz, Peter and Sebastian Coe, Marius Bakken, and Jakob Ingebrigtsen.</p>
-            <p>To calculate your training paces, enter your race time (in min:sec) and race distance using the input dials. The calculator supports race distances from 800m to the 10k. I am currently working on adding support for half-marathon and marathon performance, but for the time being, you can convert your HM or marathon time to a 10k time and use that instead.</p>
+            <p>To calculate your training paces, enter your race time (in min:sec) and race distance using the input dials. The calculator supports race distances from 800m to the 10k, or a custom distance. For the time being, you can convert your HM or marathon time to a 10k time and use that instead.</p>
             <h2 id="how-it-works">How this calculator works<a class="material-icons up" href="#top">arrow_upward</a></h2>
             <p>This calculator is based on the <a href="https://runningwritings.com/2024/01/critical-speed-guide-for-runners.html">critical speed model</a>, which is the gold standard in physiology for determining metabolically sustainable and metabolically unsustainable paces. </p>
             <p>The predictions from this calculator are unique in that they explicitly account for uncertainty in your threshold, CV, and VO2max paces.</p>
             <p>Because runners differ in their aerobic versus anaerobic orientation—sometimes called being a “fast-twitch” versus a “slow-twitch” runner—two runners at the same performance level can have different values for threshold, CV, and VO2max. </p>
-            <p>This calculator provides a “safe estimate” for each pace which is valid for 90% of runners, as well as the full uncertainty range (from the 10th to 90th percentiles). </p>
-            <p>The predictions from this calculator were developed from data on over 8,000 race performances from over 1,600 runners competing across 2,600 seasons, including high school, college, adult, and master's athletes. The dataset includes distances from 800m to the 10k. </p>
-            <p>All of these runners competed at three different distances in events lasting up to 25 minutes during the same season, which enables applying the critical speed model to calculate CS, CS+, and CS-, which are the gold-standard estimates for CV, VO2max, and threshold pace, respectively. These estimates come out of considering the possible variation in the true value of a runner's critical speed, given their race performances.</p>
+            <p>This calculator provides a “safe estimate” for each pace which is valid for 90% of runners, as well as an uncertainty range at the confidence level you choose (80%, 90%, or 95%). </p>
+            <p>The predictions from this calculator were developed from data on over 600,000 race performances from more than 100,000 high school, junior-college, and college runners competing across 186,000 seasons. The dataset includes distances from 800m to the 10k. </p>
+            <p>All of these runners competed at three or more different distances in events lasting up to 25 minutes during the same season, which enables applying the critical speed model to calculate CS, CS+, and CS-, which are the gold-standard estimates for CV, VO2max, and threshold pace, respectively. These estimates come out of considering the possible variation in the true value of a runner's critical speed, given their race performances.</p>
             <img src="images/Simulate threshold uncertainty for running.png">
             <h2 id="uncertainty-estimates">Safe estimates, median estimates, and uncertainty ranges<a class="material-icons up" href="#top">arrow_upward</a></h2>
             <p>This calculator defaults to a “safe estimate” of threshold pace, which is a pace that will produce a metabolic steady-state for 90% of runners.</p>
@@ -213,11 +212,11 @@
             <p>Why is <strong>safe estimate</strong> the default?</p>
             <p>Consider the following case, which shows the distribution of threshold pace among runners who are in 18:00 5k shape: </p>
             <img src="images/Predicting threshold pace for runners.png">
-            <p>A traditional threshold calculator app would just predict the average of that distribution (which is 6:08/mi). However, at 6:08/mi, any given 18:00 5k runner has a 50/50 chance of being in a metabolically unsustainable state!</p>
+            <p>A traditional threshold calculator app would just predict the average of that distribution (about 6:12/mi). However, at that pace, any given 18:00 5k runner has a 50/50 chance of being in a metabolically unsustainable state!</p>
             <p>If your goal in training is to produce a specific metabolic response, you want to do it in a <em>reliable</em> way. For that reason, by default this calculator uses a <strong>safe estimate</strong> that predicts a pace at which 90% of runners will be at a metabolic steady-state</p>
             <p>If you want an estimate that's closer to what you'd get from a traditional calculator, like the VDOT app, Tinman's calculator, or the McMillan calculator, just use the <strong>median estimate</strong> mode instead—that will predict the 50th percentile instead. </p>
             <p>Since CV pace is intentionally trying to be right at the 50th percentile, straddling metabolic stability and instability, the calculator returns the 50th percentile for CV pace in both modes.</p>
-            <p>If you want to see the full range of plausible paces for threshold, CV, and VO2max pace, just flip the toggle to enable <strong>uncertainty range</strong> to see the full 10th to 90th percentiles. The uncertainty range corresponds to this range of paces: </p>
+            <p>If you want to see the range of plausible paces for threshold, CV, and VO2max pace, use the <strong>uncertainty range</strong> buttons: <strong>80%</strong> shows the 10th to 90th percentiles, <strong>90%</strong> the 5th to 95th, and <strong>95%</strong> the 2.5th to 97.5th, always from the faster end to the slower end. The safe estimate always uses the 10th and 90th percentiles, whichever range you show. The 80% range corresponds to this range of paces: </p>
             <img src="images/Threshold pace uncertainty - full range.png">
             <h2>Threshold, CV, and VO2max pace FAQs<a class="material-icons up" href="#top">arrow_upward</a></h2>
             <h3 id="why-is-my-predicted-vo2max-pace-slower-than-other-calculators-">Why is my predicted VO2max pace slower than other calculators?</h3>
@@ -235,11 +234,11 @@
             <p>Take the case of the 800m. The anaerobic contribution to the 800m can be as little as 15% to as much as 35% of total energy expenditure. Clearly, two 800m runners on the low and high ends of this spectrum will have vastly different threshold paces, on account of their differences in aerobic fitness. </p>
             <p>The wide uncertainty is one reason I prefer to train middle-distance runners using a <a href="https://runningwritings.com/2023/12/percentage-based-training.html">full-spectrum percentage-based approach</a>, in the style of Renato Canova, as opposed to physiological training systems. There's just too much individual variation that a physiology-based system does not account for. </p>
             <h3 id="are-threshold-cv-and-vo2max-pace-different-for-men-versus-women-">Are threshold, CV, and VO2max pace different for men versus women?</h3>
-            <p><strong>No</strong>, not after accounting for performance level. Men and women at the same level of performance (e.g. 18:00 for 5k) have the same range of threshold, CV, and VO2max paces. Of the ~8,600 performances in this dataset, over 4,000 of them are from female runners, so I'm quite confident in this finding.</p>
+            <p><strong>No</strong>, not after accounting for performance level. Men and women at the same level of performance (e.g. 18:00 for 5k) have the same range of threshold, CV, and VO2max paces. Roughly 45% of the performances in this dataset are from female runners, so I'm quite confident in this finding.</p>
             <h3 id="are-threshold-cv-and-vo2max-pace-different-for-high-school-versus-college-runners-">Are threshold, CV, and VO2max pace different for high school versus college runners?</h3>
             <p><strong>No</strong>, not after accounting for performance level. To my surprise, high school and college runners do not differ significantly after accounting for performance level, again at least in this dataset.</p>
             <h3 id="are-these-calculations-valid-for-masters-runners-">Are these calculations valid for master's runners?</h3>
-            <p><strong>Yes</strong>. The dataset this model was built on includes over 500 master's performances both on the track and on the roads. The next update to this model will allow you to adjust for age, but the effect is quite small!</p>
+            <p><strong>Yes</strong>. The dataset this model was built on includes a few hundred master's performances both on the track and on the roads. The model does not adjust for age; in the previous version of this calculator, which did, the effect was quite small.</p>
             <h3 id="why-can-t-i-use-half-marathon-or-marathon-times-">Why can't I use half-marathon or marathon times?</h3>
             <p>The critical speed model requires three distinct race performances in a short period of time across races lasting between around two and 25 minutes.</p>
             <p>High school track, college track, and master's racing circuits (both track and roads) are ideal sources for this kind of data, since athletes regularly compete in events from 800m to 5k.</p>
@@ -249,18 +248,19 @@
             <h3 id="how-does-it-work">How are you calculating critical speed from just one performance?</h3>
             <p>It's true that the critical speed model itself requires three or more performances for a reliable fit. This calculator is essentially a <em>predictive model</em> that tells you what range of CV, threshold, and VO2max paces are compatible with a given level of performance.</p>
             <p>So, the raw data used to "train" this calculator's predictive model does have at least three performances per athlete-season. I use this raw data as the outcome that the predictive model tries to learn, when given only one performance as an input.</p>
-            <p>On a technical level, the predictive model is a <a href="https://mfasiolo.github.io/qgam/articles/qgam.html">spline-based additive quantile regression model</a>, which allows the calculator to directly estimate the 10th, 50th, and 90th percentile values for threshold, CV, and VOmax pace.</p>
+            <p>On a technical level, the predictive model is a sinh-arcsinh distributional regression model fit with <a href="https://cran.r-project.org/web/packages/mgcv/index.html">mgcv</a>: from one race per season it learns the whole distribution of threshold, CV, and VO2max paces that is compatible with a single performance—its center, its spread, and its skew—and the calculator reads any percentile off that distribution directly.</p>
             <h3 id="can-i-see-the-raw-data-you-used-to-develop-this-model-">Can I see the raw data you used to develop this model?</h3>
-            <p><strong>Yes</strong>, you can download it <a href="https://github.com/johnjdavisiv/cv-threshold-calculator/tree/main/analysis">here on GitHub</a>. I've also included the analysis code that fits the quantile regression models, and the <a href="https://github.com/johnjdavisiv/cv-threshold-calculator">source code</a> for the app itself.</p>            
+            <p>The dataset and analysis code behind the original (v1) model are <a href="https://github.com/johnjdavisiv/cv-threshold-calculator/tree/main/analysis">here on GitHub</a>, along with the <a href="https://github.com/johnjdavisiv/cv-threshold-calculator">source code</a> for the app itself, including the fitted v2.0 model the app evaluates.</p>
             <h2 id="limitations">Limitations and caveats<a class="material-icons up" href="#top">arrow_upward</a></h2>
             <p>The critical speed model is very powerful, and is regarded as the gold standard for estimating steady-state max. Even so, this calculator has a few limitations you should keep in mind.</p>
             <p>The first is the fact that everyone in this dataset competed at <strong>three different distances</strong> from 800m to 5k during the same season (indoor or outdoor track).</p>
             <p>In many cases, "true" middle-distance runners may only race at 400m&ndash;1000m indoors, and 400m & 800m outdoors.</p>
             <p> These runners are not in the data used to develop this calculator, and as a result, there may be some selection bias: <strong>predictions will be "too aerobic" for some middle distance runners</strong>. Pay close attention to the broad uncertainty range for middle-distance events.</p>
-            <p>This calculator also only spans races that are roughly equivalent to 25:00&ndash;14:00 for 5k, so I do not recommend extrapolating far beyond that range.</p>
-            <p>The data are relatively sparse at paces slower than about 25:00 for 5k (and equivalent for other events) so <strong>I do not trust the predictions as much for very slow times</strong>.</p>
-            <p>Lastly, although the calculator uses data from high school, college, adult, and master's runners, it's still missing data from elite runners and "true" recreational runners. I will continue expanding the dataset to address these limitation in the future.</p>
+            <p>The data run from 800m to the 10k, and at each distance they cover a band of times: about 1:35&ndash;4:30 for 800m, 3:18&ndash;8:00 for 1500m, 7:00&ndash;20:00 for 3000m, 12:18&ndash;30:00 for 5k, and 25:00&ndash;60:00 for 10k. Outside that band the calculator still answers, but it tells you that few runners in the dataset ran that fast or that slow, so the paces are extrapolated: the central estimate is extended smoothly from the data, and the width of the range is held at what it was at the edge of the data. <strong>I do not trust the predictions as much for very slow or very fast times.</strong></p>
+            <p>Lastly, the data are collegiate, high school, and junior-college track results, so the calculator is still missing data from elite runners and "true" recreational runners. I will continue expanding the dataset to address these limitations in the future.</p>
             <h2 id="updates">Updates<a class="material-icons up" href="#top">arrow_upward</a></h2>
+            <p><strong>Sep 5, 2026 - v2.0</strong></p>
+            <p>New statistical model, fit to over 600,000 race performances (up from about 8,000). One distributional model per pace now describes the whole range of plausible paces, so the uncertainty range can be shown at 80%, 90%, or 95% confidence. The data now reach 30:00 for 5k and 60:00 for 10k, and the calculator says so when a race falls outside them. Same model as in the Running Writings Lab iOS app.</p>
             <p><strong>Feb 2, 2025 - v1.1</strong></p>
             <p>Updated with new data from master's runners and adult runners. Cleaned out some improbable race performances from the dataset. Fixed a bug where 8k and 10k times were giving estimated paces that were too slow. Now uses a much better statistical model that improves accuracy for performances slower than ~20:00 for 5k or equivalent.</p>
             <p><strong>Jan 16, 2025 - v1.0</strong></p>
