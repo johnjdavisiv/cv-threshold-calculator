@@ -87,24 +87,24 @@ const hidden = (sel) => $(sel).classList.contains('hidden');
 m.applyState(m.DEFAULT_STATE);
 assert.ok($('.mode-toggle.active').textContent === 'Median estimate', 'median estimate is the default');
 assert.deepEqual(paces(), ['6:12', '6:02', '5:52']);
-assert.deepEqual(ranges(), ['6:03', '6:25', '5:58', '6:08', '5:44', '6:00']);
-assert.equal($('.range-header.uncertainty-col').textContent, '80% range');
+assert.deepEqual(ranges(), ['6:01', '6:29', '5:56', '6:10', '5:41', '6:02'], '90% is the default range since 2026-09-11');
+assert.equal($('.range-header.uncertainty-col').textContent, '90% range');
 assert.ok(hidden('.alert-box') && hidden('.extrapolation-box'));
 byText('.mode-toggle', 'Safe estimate').click();
 assert.deepEqual(paces(), ['6:25', '6:02', '5:44']);
 
 // range chips
-byText('.range-toggle', '90%').click();
-assert.equal(m.range_level, 90);
-assert.deepEqual(ranges(), ['6:01', '6:29', '5:56', '6:10', '5:41', '6:02']);
-assert.equal($('.range-header.uncertainty-col').textContent, '90% range');
+byText('.range-toggle', '80%').click();
+assert.equal(m.range_level, 80);
+assert.deepEqual(ranges(), ['6:03', '6:25', '5:58', '6:08', '5:44', '6:00']);
+assert.equal($('.range-header.uncertainty-col').textContent, '80% range');
 byText('.range-toggle', '95%').click();
 assert.deepEqual(ranges(), ['5:59', '6:33', '5:55', '6:11', '5:39', '6:04']);
 assert.deepEqual(paces(), ['6:25', '6:02', '5:44'], 'safe estimate does not move with the chips');
 byText('.range-toggle', 'Off').click();
 assert.equal(m.range_level, 'off');
 assert.ok($$('.uncertainty-col').every((el) => el.classList.contains('hidden')), 'Off hides the range column');
-assert.deepEqual(ranges(), ['6:03', '6:25', '5:58', '6:08', '5:44', '6:00'], 'ends still computed at 80% while Off');
+assert.deepEqual(ranges(), ['6:01', '6:29', '5:56', '6:10', '5:41', '6:02'], 'ends still computed at the default 90% while Off');
 byText('.range-toggle', '80%').click();
 assert.ok($$('.uncertainty-col').every((el) => !el.classList.contains('hidden')));
 
@@ -181,7 +181,7 @@ assert.deepEqual([$('#d1').textContent, $('#d2').textContent, $('#d3').textConte
 assert.equal($('#race-dist-text').textContent, '5 km');
 assert.equal($('.output-toggle.active').textContent, '/mi');
 assert.equal($('.mode-toggle.active').textContent, 'Safe estimate');
-assert.equal(m.range_level, 80);
+assert.equal(m.range_level, 90, 'junk range falls back to the default 90%');
 assert.equal($('#custom-m').value, '5000');
 // Restore defaults
 $('#reset-button').click();

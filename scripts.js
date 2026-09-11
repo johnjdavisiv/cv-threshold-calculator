@@ -138,7 +138,7 @@ let race_dist_m = 5000
 let output_mode = "median" // "median" (default since v2.1) or "safe"
 
 // Uncertainty range chips: 80, 90, 95 or 'off' (the ends are still computed at 80 while off, just hidden)
-let range_level = 80
+let range_level = 90
 
 let dec_seconds
 
@@ -710,7 +710,7 @@ function updateOutput(){
     }
 
     // The range at the chosen level (80% while Off — hidden, but kept current)
-    const rq = RANGE_QUANTILES[range_level === 'off' ? 80 : range_level]
+    const rq = RANGE_QUANTILES[range_level === 'off' ? 90 : range_level]
 
     out_text_threshold_lo.textContent = convert_fxn(cs_results.cs_minus[rq.lo])
     out_text_threshold_hi.textContent = convert_fxn(cs_results.cs_minus[rq.hi])
@@ -759,7 +759,7 @@ const DEFAULT_STATE = {
     custom: { mode: 'meters', m: 5000, mi: 3.1, km: 5.0 },
     output_unit: '/mi',
     mode: 'median',
-    range: 80
+    range: 90
 };
 
 function setCookie(name, value, days) {

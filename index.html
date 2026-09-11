@@ -23,7 +23,7 @@
     <link rel="stylesheet" type="text/css" href="styles.css?v=2026-09-05">
     <link rel="stylesheet" href="app-gallery.css?v=22e5443b">
     <script src="rw-storage.js?v=2026-09-05" defer></script>
-    <script src="scripts.js?v=2026-09-05" defer></script>
+    <script src="scripts.js?v=2026-09-11" defer></script>
     <script src="apps.js?v=22e5443b" defer></script>
     <script src="app-gallery.js?v=22e5443b" defer></script>
     <script defer data-domain="apps.runningwritings.com" src="https://plausible.io/js/script.tagged-events.js"></script>
@@ -140,7 +140,7 @@
                     <tr>
                         <td></td>
                         <th scope="col"><span class="range-header">&nbsp;</span></th>
-                        <th scope="col"><span class="range-header uncertainty-col">80% range</span></th>
+                        <th scope="col"><span class="range-header uncertainty-col">90% range</span></th>
                     </tr>
                     <tr>
                         <th scope="row">Threshold</th>
@@ -195,8 +195,8 @@
             </div>
             <div class="uncertainty-toggle-div unit-stack-horiz">
                 <span class="uncertainty-pre">Uncertainty range:</span>
-                <button class="unit-toggle range-toggle active">80%</button>
-                <button class="unit-toggle range-toggle">90%</button>
+                <button class="unit-toggle range-toggle">80%</button>
+                <button class="unit-toggle range-toggle active">90%</button>
                 <button class="unit-toggle range-toggle">95%</button>
                 <button class="unit-toggle range-toggle">Off</button>
             </div>
@@ -285,6 +285,8 @@
             <h2 id="calculator-settings">Calculator settings<a class="material-icons up" href="#top"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg></a></h2>
             <p>This calculator will remember your race time, race distance, output units, estimate mode, and uncertainty range setting in your browser's local storage, so when you come back later you can pick up where you left off. You can reset everything to the defaults with the <span class="material-icons inline-icon"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z"/></svg></span> button.</p>
             <h2 id="updates">Updates<a class="material-icons up" href="#top"><svg viewBox="0 -960 960 960" aria-hidden="true" focusable="false"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg></a></h2>
+            <p><strong>Sep 11, 2026 - v2.2</strong></p>
+            <p>The uncertainty range now defaults to 90% (the 5th to 95th percentiles); 80% and 95% are still a tap away.</p>
             <p><strong>Sep 5, 2026 - v2.0</strong></p>
             <p>New statistical model, fit to over 600,000 race performances (up from about 8,000). One distributional model per pace now describes the whole range of plausible paces, so the uncertainty range can be shown at 80%, 90%, or 95% confidence. The data now reach 30:00 for 5k and 60:00 for 10k, and the calculator says so when a race falls outside them. Same model as in the Running Writings Lab iOS app. The default mode is now the median estimate; the safe estimate is still available with one tap. The calculator now also remembers your settings between visits, with a restore-defaults button.</p>
             <p><strong>Feb 2, 2025 - v1.1</strong></p>
