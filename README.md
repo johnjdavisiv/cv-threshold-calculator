@@ -8,3 +8,10 @@ These estimates are based on critical speed calculations applied to data from ov
 
 [See the live app here](https://apps.runningwritings.com/cv-threshold-calculator/)
 
+## Build and deploy
+
+```
+npm run build      # stamps this app's own css/js with today's date, then assembles dist/ (exactly the upload set)
+```
+
+Deploy = upload the contents of `dist/` to the SiteGround path the build prints. The build fails if a referenced asset is missing, if a page points at a file that is not in `dist/`, or if a `?v=dev` stamp is left. `tools/build-dist.mjs` and `tools/stamp.mjs` are byte-identical across the RW web apps; this app's file list is `rwBuild` in `package.json`.
